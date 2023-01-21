@@ -1,0 +1,239 @@
+.app-container {
+  border-radius: 4px;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  max-width: 1280px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  max-width: 2000px;
+  margin: 0 auto;
+}
+
+.app-content {
+  padding: 16px;
+  background-color: var(--app-bg);
+  height: 100%;
+  flex: 1;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.products-area-wrapper {
+  width: 100%;
+  height: 90vh;
+  overflow: auto;
+  padding: 0 4px;
+  padding-bottom: 30px;
+}
+
+.tableView .products-header {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  background-color: var(--app-content-secondary-color);
+  position: sticky;
+  top: 0;
+}
+.tableView .products-row {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+}
+.tableView .products-row:hover {
+  box-shadow: var(--filter-shadow);
+  background-color: var(--app-content-secondary-color);
+}
+.tableView .products-row .cell-more-button {
+  display: none;
+}
+.tableView .product-cell {
+  flex: 1;
+  padding: 8px 16px;
+  color: var(--app-content-main-color);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+.tableView .product-cell img {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  margin-right: 6px;
+}
+@media screen and (max-width: 780px) {
+  .tableView .product-cell {
+    font-size: 12px;
+  }
+  .tableView .product-cell.image span {
+    display: none;
+  }
+  .tableView .product-cell.image {
+    flex: 0.2;
+  }
+}
+@media screen and (max-width: 520px) {
+  .tableView .product-cell.category,
+  .tableView .product-cell.sales {
+    display: none;
+  }
+  .tableView .product-cell.status-cell {
+    flex: 0.4;
+  }
+  .tableView .product-cell.stock,
+  .tableView .product-cell.price {
+    flex: 0.2;
+  }
+}
+@media screen and (max-width: 480px) {
+  .tableView .product-cell.stock {
+    display: none;
+  }
+  .tableView .product-cell.price {
+    flex: 0.4;
+  }
+}
+.tableView .sort-button {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--app-content-main-color);
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+}
+.tableView .sort-button:hover {
+  color: var(--action-color);
+}
+.tableView .sort-button svg {
+  width: 12px;
+}
+.tableView .cell-label {
+  display: none;
+}
+
+.status {
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+.status:before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+.status.active {
+  color: #2ba972;
+  background-color: rgba(43, 169, 114, 0.2);
+}
+.status.active:before {
+  background-color: #2ba972;
+}
+.status.disabled {
+  color: #59719d;
+  background-color: rgba(89, 113, 157, 0.2);
+}
+.status.disabled:before {
+  background-color: #59719d;
+}
+
+.gridView {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -8px;
+}
+@media screen and (max-width: 520px) {
+  .gridView {
+    margin: 0;
+  }
+}
+.gridView .products-header {
+  display: none;
+}
+.gridView .products-row {
+  margin: 8px;
+  width: calc(25% - 16px);
+  background-color: var(--app-content-secondary-color);
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  position: relative;
+  height: 400px;
+}
+.gridView .products-row:hover {
+  transform: scale(1.01);
+  box-shadow: var(--filter-shadow);
+}
+.gridView .products-row:hover .cell-more-button {
+  display: flex;
+}
+@media screen and (max-width: 1024px) {
+  .gridView .products-row {
+    width: calc(33.3% - 16px);
+  }
+}
+@media screen and (max-width: 820px) {
+  .gridView .products-row {
+    width: calc(50% - 16px);
+  }
+}
+@media screen and (max-width: 520px) {
+  .gridView .products-row {
+    width: 100%;
+    margin: 8px 0;
+  }
+  .gridView .products-row:hover {
+    transform: none;
+  }
+}
+.gridView .products-row .cell-more-button {
+  border: none;
+  padding: 0;
+  border-radius: 4px;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: rgba(16, 24, 39, 0.7);
+  color: #fff;
+  cursor: pointer;
+  display: none;
+}
+.gridView .product-cell {
+  color: var(--app-content-main-color);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.gridView .product-cell:not(.image) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.gridView .product-cell.image span {
+  font-size: 18px;
+  line-height: 24px;
+}
+.gridView .product-cell img {
+  width: 100%;
+  height: 140px;
+  -o-object-fit: cover;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+.gridView .cell-label {
+  opacity: 0.6;
+}
