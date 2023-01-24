@@ -18,7 +18,7 @@ const Login = () => {
 
   const SubmitHandler = () => {
     if (username === "") {
-      userNameInput.current.classList.add("error-input")
+      userNameInput.current.style.border = "2px solid red"
       userNameInput.current.placeholder = "username kiritilishi shart!"
     } else {
       userNameInput.current.classList.remove("error-input")
@@ -48,7 +48,7 @@ const Login = () => {
       .then((data) => {
         if (data.token) {
           window.localStorage.setItem("token", data.token);
-          navigate("/roles");
+          navigate("/");
         } else {
           console.log("Password or username wrong");
         }
@@ -81,6 +81,7 @@ const Login = () => {
       <div className="box-login">
         <h1 className="login_heading">Login</h1>
         <input
+          required={true}
           ref={userNameInput}
           onChange={(e) => {
             setUsername(e.target.value);
@@ -92,6 +93,7 @@ const Login = () => {
 
         <div className="password_input">
           <input
+            required={true}
             ref={passInput}
             onChange={(e) => {
               setPassword(e.target.value);

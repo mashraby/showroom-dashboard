@@ -10,25 +10,28 @@ import Tissues from "./Pages/Tissues/Tissues";
 import Users from "./Pages/Users/Users";
 import Private from "./Routes/Private";
 import Public from "./Routes/Public";
+import { Provider as GetFetchProvider } from "./Context/GetFetchContext/GetFetchContext";
 
 function App() {
   return (
-    <div className="app-container">
-      <Routes>
-        <Route path="/" element={<Private />}>
-          <Route path="/roles" element={<Roles />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/companys" element={<Companys />} />
-          <Route path="/furniture_types" element={<Furnute_types />} />
-          <Route path="/models" element={<Models />} />
-          <Route path="/tissues" element={<Tissues />} />
-        </Route>
-        <Route path="/" element={<Public />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </div>
+    <GetFetchProvider>
+      <div className="app-container">
+        <Routes>
+          <Route path="/" element={<Private />}>
+            <Route path="/" element={<Roles />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/companys" element={<Companys />} />
+            <Route path="/furniture_types" element={<Furnute_types />} />
+            <Route path="/models" element={<Models />} />
+            <Route path="/tissues" element={<Tissues />} />
+          </Route>
+          <Route path="/" element={<Public />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </div>
+    </GetFetchProvider>
   );
 }
 

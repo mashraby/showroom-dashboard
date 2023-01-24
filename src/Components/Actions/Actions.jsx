@@ -26,7 +26,7 @@ export default function Actions() {
 
   return (
     <div className="app-content-actions">
-      <input className="search-bar" placeholder="Search..." type="text" />
+      <input required={true} className="search-bar" placeholder="Search..." type="text" />
       <div className="app-content-actions-wrapper">
         <div className="filter-button-wrapper">
           <button
