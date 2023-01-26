@@ -4,6 +4,7 @@ import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
+import accounting from 'accounting';
 
 export default function Tissues() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
@@ -164,20 +165,20 @@ export default function Tissues() {
                       src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
                       alt="product"
                     />
-                    <span>Ocean</span>
+                    <span>{index + 1}</span>
                   </div>
                   <div className="product-cell category">
                     <span className="cell-label">Tissue Name:</span>{item.name}
                   </div>
                 
                   <div className="product-cell sales">
-                    <span className="cell-label">Tissue Cost:</span>{item.cost}
+                    <span className="cell-label">Tissue Cost:</span>{accounting.formatNumber(item.cost, 0, " ")}
                   </div>
                   <div className="product-cell stock">
-                    <span className="cell-label">Tissue Price 1:</span>{item.price1}
+                    <span className="cell-label">Tissue Price 1:</span>{accounting.formatNumber(item.price1, 0, " ")}
                   </div>
                   <div className="product-cell price">
-                    <span className="cell-label">Tissue Price 2:</span>{item.price2}
+                    <span className="cell-label">Tissue Price 2:</span>{accounting.formatNumber(item.price2, 0, " ")}
                   </div>
                 </div>
               );
@@ -211,8 +212,9 @@ export default function Tissues() {
             <span className="input-label">Enter a tissue cost</span>
             <input
               required={true}
+              value={accounting.formatNumber(tissueCost, 0, " ")}
               type="text"
-              onChange={(e) => setTissueCost(e.target.value)}
+              onChange={(e) => setTissueCost(accounting.unformat(e.target.value))}
               placeholder="tissue cost"
             />
           </div>
@@ -220,8 +222,9 @@ export default function Tissues() {
             <span className="input-label">Enter a tissue price 1</span>
             <input
               required={true}
+              value={accounting.formatNumber(tissuePrice1, 0, " ")}
               type="text"
-              onChange={(e) => setTissuePrice1(e.target.value)}
+              onChange={(e) => setTissuePrice1(accounting.unformat(e.target.value))}
               placeholder="tissue price 1"
             />
           </div>
@@ -229,8 +232,9 @@ export default function Tissues() {
             <span className="input-label">Enter a tissue price 2</span>
             <input
               required={true}
+              value={accounting.formatNumber(tissuePrice2, 0, " ")}
               type="text"
-              onChange={(e) => setTissuePrice2(e.target.value)}
+              onChange={(e) => setTissuePrice2(accounting.unformat(e.target.value))}
               placeholder="tissue price 2"
             />
           </div>

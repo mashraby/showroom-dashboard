@@ -1,43 +1,55 @@
 import axios from "axios";
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 
-export default function Models() {
+export default function Configurations() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
-  const [sendModelLoad, setSendModelLoad] = useState(false);
-  const [modelName, setModelName] = useState("");
-  const [models, setModels] = useState([]);
+  const [sendConfigurationLoad, setSendConfigurationLoad] = useState(false);
+  const [ConfigurationName, setConfigurationName] = useState("");
+  const [configurations, setConfigurations] = useState([]);
   const [types, setTypes] = useState([])
-  const [selectType, setSelectType] = useState("")
+  const [models, setModels] = useState([])
+  const [selectType, setSelectType] = useState("684ba7e9-7c95-4173-bfcf-3738116c8242")
+  const [selectModel, setSelectModel] = useState("")
 
   const data = {
     headerInfos: {
-      title: "Models",
-      btnTitle: "Add Model",
+      title: "Configurations",
+      btnTitle: "Add Configuration",
     },
   };
 
-  const sendModel = (e) => {
+  const sendConfiguration = (e) => {
     e.preventDefault();
-    setSendModelLoad(true);
+    setSendConfigurationLoad(true);
 
     axios
-      .post("/model", {
-        name: modelName,
-        type: selectType
+      .post("/configuration", {
+        name: ConfigurationName,
+        model: selectModel
       })
       .then((res) => {
         if (res && res.status === 200) {
           setIsOpen(!isOpen);
         }
       })
-      .finally(() => setSendModelLoad(false));
+      .finally(() => setSendConfigurationLoad(false));
   };
+
+  useEffect(() => {
+    axios
+      .get(`/typemodels/${selectType}`)
+      .then((res) => {
+        console.log(res)
+        setModels(res.data)
+      })
+      .catch((err) => console.log(err))
+      
+  }, [selectType])
 
   useEffect(() => {
 
@@ -50,10 +62,10 @@ export default function Models() {
       .catch((err) => console.log(err))
 
     axios
-      .get("/models")
+      .get("/configurations")
       .then((res) => {
         console.log(res);
-        setModels(res.data);
+        setConfigurations(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -67,7 +79,7 @@ export default function Models() {
         <div className="products-area-wrapper tableView">
           <div className="products-header">
             <div className="product-cell image">
-              Model ID
+              Configuration ID
               <button className="sort-button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +95,7 @@ export default function Models() {
               </button>
             </div>
             <div className="product-cell category">
-              Model Name
+              Configuration Name
               <button className="sort-button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -99,9 +111,9 @@ export default function Models() {
               </button>
             </div>
           </div>
-          {models && models.map((item, index) => {
+          {configurations && configurations.map((item, index) => {
             return (
-              <Link to={`/typemodels/${item.id}`} id={item.id} key={index + 1} className="products-row">
+              <div key={index + 1} className="products-row">
                 <button className="cell-more-button">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +143,7 @@ export default function Models() {
                   <span className="cell-label">Model Name:</span>
                   {item.name}
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>
@@ -143,20 +155,20 @@ export default function Models() {
         className="add_modal"
       ></div>
       <form
-        onSubmit={(e) => sendModel(e)}
+        onSubmit={(e) => sendConfiguration(e)}
         style={isOpen ? { top: "50%" } : { top: "-100%" }}
         className="add_modal_form"
         action=""
       >
-        <h1 className="add_modal_title">Add Model</h1>
+        <h1 className="add_modal_title">Add Configuration</h1>
         <div className="input-groups">
           <div className="input-box">
-            <span className="input-label">Enter a model name</span>
+            <span className="input-label">Enter a configuration name</span>
             <input
               required={true}
               type="text"
-              onChange={(e) => setModelName(e.target.value)}
-              placeholder="model name"
+              onChange={(e) => setConfigurationName(e.target.value)}
+              placeholder="configuration name"
             />
           </div>
           <div className="input-box">
@@ -169,9 +181,19 @@ export default function Models() {
                 })}
             </select>
           </div>
+          <div className="input-box">
+            <span className="input-label">Choose a model</span>
+            <select onChange={(e) => setSelectModel(e.target.value)} name="" id="">
+              <option value="none" disabled selected hidden>Choose ...</option>
+              {models &&
+                models.map((el) => {
+                  return <option key={el.id} value={el.id}>{el.name}</option>;
+                })}
+            </select>
+          </div>
         </div>
         <button className="add_modal_submit_btn">
-          {sendModelLoad ? "loading..." : "Add Model"}
+          {sendConfigurationLoad ? "loading..." : "Add Configuration"}
         </button>
       </form>
     </div>
