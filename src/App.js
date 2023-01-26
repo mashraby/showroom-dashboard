@@ -11,6 +11,7 @@ import Users from "./Pages/Users/Users";
 import Private from "./Routes/Private";
 import Public from "./Routes/Public";
 import { Provider as GetFetchProvider } from "./Context/GetFetchContext/GetFetchContext";
+import Typemodels from "./Pages/Typemodels/Typemodels";
 import Configurations from "./Pages/Configurations/Configurations";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
             <Route path="/companys" element={<Companys />} />
             <Route path="/furniture_types" element={<Furnute_types />} />
             <Route path="/models" element={<Models />} />
+            <Route path="/typemodels/:id" element={<Typemodels />} />
             <Route path="/configurations" element={<Configurations />} />
             <Route path="/tissues" element={<Tissues />} />
           </Route>

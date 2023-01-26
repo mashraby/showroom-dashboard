@@ -29,10 +29,11 @@ export default function Users() {
   const sendUserData = (e) => {
     e.preventDefault()
     setLoading(true)
+    console.log(userData);
     axios.post("/user", {
       username: userData.username,
       password: userData.password, 
-      role: userData.role
+      roleId: userData.role
     })
     .then((res) => {
       if(res && res.status === 200) {

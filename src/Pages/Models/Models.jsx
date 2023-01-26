@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
@@ -100,7 +101,7 @@ export default function Models() {
           </div>
           {models && models.map((item, index) => {
             return (
-              <div key={index + 1} className="products-row">
+              <Link to={`/typemodels/${item.id}`} id={item.id} key={index + 1} className="products-row">
                 <button className="cell-more-button">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +131,7 @@ export default function Models() {
                   <span className="cell-label">Model Name:</span>
                   {item.name}
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
