@@ -60,7 +60,7 @@ body {
 
 
 .edit-price-section>div {
-  width: 235px;
+  width: 255px;
   height: 215px;
   border-radius: 9px;
   padding: 7px;
@@ -149,4 +149,26 @@ tr:hover {
 
 .shelf {
   padding: 25px 75px ;
+}
+
+
+.conf-boxes {
+  width: 255px;
+  height: 215px;
+  border-radius: 9px;
+  padding: 9px 13px 13px 13px;
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+}
+
+.conf-boxes> button {
+  padding: 7px;
+  font-size: 15px;
+  cursor: pointer;
+  background-color: #24a0ed ;
+  color: white;
+  border: none;
 }

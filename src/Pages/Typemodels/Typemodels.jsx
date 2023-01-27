@@ -39,7 +39,7 @@ export default function Typemodels() {
     <div className="app-container">
       <Navbar />
       <div className="app-content">
-        <h1 style={{color:"white",textAlign:'center',padding:25}}>{model?.name}</h1>
+        <h2 style={{color:"white",textAlign:'center',padding:25}}>Model: {model?.name}</h2>
           {/* <p>Name: {model?.name}</p>
           <p>price 1: <b>{model?.price1}</b> %</p>
           <p>price 2: <b>{model?.price2}</b> %</p>
@@ -47,35 +47,57 @@ export default function Typemodels() {
         <div className="edit-price-section">
           <div>
             <h3>Factory</h3>
+            <hr />
+            <br />
             <p>Cost: <b>{accounting.formatNumber(ModelCost(model?.configurations ? model.configurations : []),0," ")}</b> So'm</p>
             <p>Percent: {model?.price1} %</p>
-            <p>Avarage: {5992000}</p>
+            <p>Avarage: <b>{accounting.formatNumber(452147000,0," ")}</b> so'm</p>
           </div>
           <div>
             <h3>Showroom</h3>
+            <hr />
+            <br />
             <p>Cost: <b>{588246000}</b></p>
             <p>percent: {model?.price2} %</p>
             <p>Avarage: 547893000</p>
           </div>
           <div>
             <h3>Diller</h3>
-            <p>Lorem, ipsum dolor.</p>
+            <hr />
+            <br />
+            <p>Cost: <b>{accounting.formatNumber(4523000,0," ")}</b></p>
+            <p>percent:12 %</p>
+            <p>Avarage: <b>{accounting.formatNumber(452147000,0," ")}</b> so'm</p>
           </div>
           <div>
             <h3>Aksiya</h3>
+            <hr />
+            <br />
             <p>Cost: <b>458752000</b></p>
           </div>
         </div>
 
-        {/* <h1 style={{color:'white',textAlign:'center',padding:25}}>Configuration</h1>
-
-        <div className="shelf-configuration">
-
-        </div> */}
 
 
         <h1 style={{color:'white',textAlign:'center',padding:25}}>Configuration</h1>
-        <div className='shelf'>
+
+        <div className="edit-price-section">
+          {
+            model?.configurations?.map((e,i) => {
+              return(
+                <div className="conf-boxes">
+                 <div className="head-conf-box">
+                    <p>Name: {e.name}</p>
+                    <p>Cost: <b>{accounting.formatNumber(e.cost,0," ")}</b> so'm</p>
+                    <p>Count: {e.running_qty}</p>
+                 </div>
+                 <button>Edit conf</button>
+                </div>
+              );
+            })
+          }
+        </div>
+        {/* <div className='shelf'>
          <table>
             <thead>
                <tr>
@@ -113,7 +135,7 @@ export default function Typemodels() {
                })}
             </tbody>
          </table>
-         </div>
+         </div> */}
       </div>
     </div>
   );
