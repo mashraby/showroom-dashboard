@@ -7,6 +7,8 @@ import Navbar from "../../Components/Navbar/Navbar";
 export default function Typemodels() {
   const { id } = useParams();
 
+  // comment
+
   const [model , setModel ] = useState()
 
   useEffect(() => {
