@@ -48,17 +48,17 @@ export default function Typemodels() {
           <div>
             <h3>Factory</h3>
             <p>Cost: <b>{accounting.formatNumber(ModelCost(model?.configurations ? model.configurations : []),0," ")}</b> So'm</p>
-            <p>Percent: {model.price1} %</p>
+            <p>Percent: {model?.price1} %</p>
             <p>Avarage: {5992000}</p>
           </div>
           <div>
             <h3>Showroom</h3>
             <p>Cost: <b>{588246000}</b></p>
-            <p>percent: {model.price2} %</p>
+            <p>percent: {model?.price2} %</p>
             <p>Avarage: 547893000</p>
           </div>
           <div>
-            <h3>Lorem, ipsum.</h3>
+            <h3>Diller</h3>
             <p>Lorem, ipsum dolor.</p>
           </div>
           <div>
@@ -66,6 +66,13 @@ export default function Typemodels() {
             <p>Cost: <b>458752000</b></p>
           </div>
         </div>
+
+        {/* <h1 style={{color:'white',textAlign:'center',padding:25}}>Configuration</h1>
+
+        <div className="shelf-configuration">
+
+        </div> */}
+
 
         <h1 style={{color:'white',textAlign:'center',padding:25}}>Configuration</h1>
         <div className='shelf'>
