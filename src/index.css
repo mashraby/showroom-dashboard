@@ -61,9 +61,12 @@ body {
 
 .edit-price-section>div {
   width: 255px;
-  height: 215px;
+  height: 235px;
   border-radius: 9px;
   padding: 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   margin: 15px;
   background-color: white;
 }
@@ -154,7 +157,7 @@ tr:hover {
 
 .conf-boxes {
   width: 255px;
-  height: 215px;
+  height: 235px;
   border-radius: 9px;
   padding: 9px 13px 13px 13px;
   margin: 15px;

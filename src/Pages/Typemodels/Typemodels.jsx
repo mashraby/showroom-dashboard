@@ -19,7 +19,6 @@ export default function Typemodels() {
     })
 
     return modelCost;
-
   }
 
   const [model , setModel ] = useState()
@@ -46,34 +45,56 @@ export default function Typemodels() {
           <p>price 3: <b>{model?.price3}</b> %</p> */}
         <div className="edit-price-section">
           <div>
-            <h3>Factory</h3>
-            <hr />
-            <br />
-            <p>Cost: <b>{accounting.formatNumber(ModelCost(model?.configurations ? model.configurations : []),0," ")}</b> So'm</p>
-            <p>Percent: {model?.price1} %</p>
-            <p>Avarage: <b>{accounting.formatNumber(452147000,0," ")}</b> so'm</p>
+            <div>
+              <h3>Factory</h3>
+              <hr />
+              <br />
+              <p>Cost: <b>{accounting.formatNumber(ModelCost(model?.configurations ? model.configurations : []),0," ")}</b> So'm</p>
+              <p>Percent: {model?.price1} %</p>
+              <p>наценка: {accounting.formatNumber(54200,0," ")}</p>
+              <br />
+              <p>Avarage: <b>{accounting.formatNumber(452147000,0," ")}</b> so'm</p>
+            </div>
+            <button>Edit price</button>
           </div>
           <div>
-            <h3>Showroom</h3>
-            <hr />
-            <br />
-            <p>Cost: <b>{588246000}</b></p>
-            <p>percent: {model?.price2} %</p>
-            <p>Avarage: 547893000</p>
+            <div>
+              <h3>Showroom</h3>
+                <hr />
+                <br />
+                <p>Cost: <b>{588246000}</b></p>
+                <p>percent: {model?.price2} %</p>
+                <p>наценка: {accounting.formatNumber(54200,0," ")}</p>
+                <br />
+                <p>Avarage: <b>{accounting.formatNumber(452147000,0," ")}</b> so'm</p>
+            </div>
+            <button>Edit price</button>
           </div>
           <div>
-            <h3>Diller</h3>
-            <hr />
-            <br />
-            <p>Cost: <b>{accounting.formatNumber(4523000,0," ")}</b></p>
-            <p>percent:12 %</p>
-            <p>Avarage: <b>{accounting.formatNumber(452147000,0," ")}</b> so'm</p>
+            <div>
+              <h3>Diller</h3>
+              <hr />
+              <br />
+              <p>Cost: <b>{accounting.formatNumber(4523000,0," ")}</b></p>
+              <p>percent:12 %</p>
+              <p>наценка: {accounting.formatNumber(54200,0," ")}</p>
+              <br />
+              <p>Avarage: <b>{accounting.formatNumber(452147000,0," ")}</b> so'm</p>
+            </div>
+            <button>Edit price</button>
           </div>
           <div>
-            <h3>Aksiya</h3>
-            <hr />
-            <br />
-            <p>Cost: <b>458752000</b></p>
+            <div className="head-price-box">
+              <h3>Aksiya</h3>
+              <hr />
+              <br />
+              <p>Cost: <b>458752000</b></p>
+              <p>percent: {model?.price2} %</p>
+              <p>наценка: {accounting.formatNumber(54200,0," ")}</p>
+              <br />
+              <p>Finally Price: <b>{accounting.formatNumber(452147000,0," ")}</b> so'm</p>
+            </div>
+            <button>Edit price</button>
           </div>
         </div>
 
