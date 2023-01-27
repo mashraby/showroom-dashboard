@@ -25,13 +25,25 @@ export default function Typemodels() {
     <div className="app-container">
       <Navbar />
       <div className="app-content">
-        <h1 style={{ color: "white" }}>
-          <p>Name: {model?.name}</p>
-          <p>price 1: <b>{model?.price1}</b> so'm</p>
-          <p>price 2: <b>{model?.price2}</b> so'm</p>
-          <p>price 3: <b>{model?.price3}</b> so'm</p>
-
-        </h1>
+        <h1 style={{color:"white",textAlign:'center',padding:25}}>{model?.name}</h1>
+          {/* <p>Name: {model?.name}</p>
+          <p>price 1: <b>{model?.price1}</b> %</p>
+          <p>price 2: <b>{model?.price2}</b> %</p>
+          <p>price 3: <b>{model?.price3}</b> %</p> */}
+        <div className="edit-price-section">
+          <div>
+            <p>Lorem, ipsum dolor.</p>
+          </div>
+          <div>
+            <p>Lorem, ipsum dolor.</p>
+          </div>
+          <div>
+            <p>Lorem, ipsum dolor.</p>
+          </div>
+          <div>
+            <p>Lorem, ipsum dolor.</p>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -49,3 +49,21 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+
+
+.edit-price-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.edit-price-section>div {
+  width: 235px;
+  height: 215px;
+  border-radius: 9px;
+  padding: 7px;
+  margin: 15px;
+  background-color: white;
+}
