@@ -20,7 +20,7 @@ function App() {
     <GetFetchProvider>
       <div className="app-container">
         <Routes>
-          {/* <Route path="/" element={<Private />}> */}
+          <Route path="/" element={<Private />}>
             <Route path="/" element={<Roles />} />
             <Route path="/users" element={<Users />} />
             <Route path="/companys" element={<Companys />} />
@@ -30,11 +30,11 @@ function App() {
             <Route path="/configurations" element={<Configurations />} />
             <Route path="/tissues" element={<Tissues />} />
             <Route path="/legs" element={<Legs />} />
-          {/* </Route> */}
-          {/* <Route path="/" element={<Public />}> */}
+          </Route>
+          <Route path="/" element={<Public />}>
             <Route path="/login" element={<Login />} />
             <Route path="/*" element={<NotFound />} />
-          {/* </Route> */}
+          </Route>
         </Routes>
       </div>
     </GetFetchProvider>
