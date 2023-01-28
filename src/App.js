@@ -13,13 +13,14 @@ import Public from "./Routes/Public";
 import { Provider as GetFetchProvider } from "./Context/GetFetchContext/GetFetchContext";
 import Typemodels from "./Pages/Typemodels/Typemodels";
 import Configurations from "./Pages/Configurations/Configurations";
+import Legs from "./Pages/Legs/Legs";
 
 function App() {
   return (
     <GetFetchProvider>
       <div className="app-container">
         <Routes>
-          <Route path="/" element={<Private />}>
+          {/* <Route path="/" element={<Private />}> */}
             <Route path="/" element={<Roles />} />
             <Route path="/users" element={<Users />} />
             <Route path="/companys" element={<Companys />} />
@@ -28,11 +29,12 @@ function App() {
             <Route path="/typemodels/:id" element={<Typemodels />} />
             <Route path="/configurations" element={<Configurations />} />
             <Route path="/tissues" element={<Tissues />} />
-          </Route>
-          <Route path="/" element={<Public />}>
+            <Route path="/legs" element={<Legs />} />
+          {/* </Route> */}
+          {/* <Route path="/" element={<Public />}> */}
             <Route path="/login" element={<Login />} />
             <Route path="/*" element={<NotFound />} />
-          </Route>
+          {/* </Route> */}
         </Routes>
       </div>
     </GetFetchProvider>
