@@ -141,7 +141,7 @@ export default function Users() {
                   </button>
                   <div className="product-cell image">
                     <img
-                      src={item.role.role_name === "SELLER" ? seller : admin}
+                      src={item.role?.role_name === "SELLER" ? seller : admin}
                       alt="product"
                     />
                     <span>{index + 1}</span>
@@ -162,7 +162,7 @@ export default function Users() {
                   </div>
                   <div className="product-cell sales">
                     <span className="cell-label">User Role:</span>
-                    {item.role.role_name}
+                    {item.role?.role_name}
                   </div>
                 </div>
               );

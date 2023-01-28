@@ -13,8 +13,12 @@ export default function Configurations() {
   const [configurations, setConfigurations] = useState([]);
   const [types, setTypes] = useState([])
   const [models, setModels] = useState([])
+  const [running_qty , setRunningQty ] = useState()
   const [selectType, setSelectType] = useState("684ba7e9-7c95-4173-bfcf-3738116c8242")
   const [selectModel, setSelectModel] = useState("")
+
+  const [ cost , setCost ] = useState()
+  const [ title , setTitle ] = useState()
 
   const data = {
     headerInfos: {
@@ -30,7 +34,10 @@ export default function Configurations() {
     axios
       .post("/configuration", {
         name: ConfigurationName,
-        model: selectModel
+        model: selectModel,
+        cost,
+        title,
+        running_qty
       })
       .then((res) => {
         if (res && res.status === 200) {
@@ -169,6 +176,33 @@ export default function Configurations() {
               type="text"
               onChange={(e) => setConfigurationName(e.target.value)}
               placeholder="configuration name"
+            />
+          </div>
+          <div className="input-box">
+            <span className="input-label">Enter a configuration Cost</span>
+            <input
+              required={true}
+              type="number"
+              onChange={(e) => setCost(e.target.value)}
+              placeholder="configuration Cost"
+            />
+          </div>
+          <div className="input-box">
+            <span className="input-label">Enter a configuration Title</span>
+            <input
+              required={true}
+              type="text"
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="configuration Tile"
+            />
+          </div>
+          <div className="input-box">
+            <span className="input-label">Enter a configuration Quantity</span>
+            <input
+              required={true}
+              type="number"
+              onChange={(e) => setRunningQty(e.target.value)}
+              placeholder="configuration Tile"
             />
           </div>
           <div className="input-box">
