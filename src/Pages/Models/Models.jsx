@@ -161,8 +161,8 @@ export default function Models() {
           </div>
           <div className="input-box">
             <span className="input-label">Choose a type</span>
-            <select onChange={(e) => setSelectType(e.target.value)} name="" id="">
-              <option value="none" disabled selected hidden>Choose ...</option>
+            <select defaultValue="Choose ..." onChange={(e) => setSelectType(e.target.value)} name="" id="">
+              <option value="Choose ..." disabled hidden>Choose ...</option>
               {types &&
                 types.map((el) => {
                   return <option key={el.id} value={el.id}>{el.name}</option>;

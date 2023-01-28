@@ -12,6 +12,15 @@ export default function Typemodels() {
 
   const { isOpen, setIsOpen } = useContext(OpenModal)
 
+  const [modalData, setModalData] = useState({})
+
+  const [updateData, setUpdateData] = useState({
+    id: "",
+    name: "",
+    cost: null,
+    running_qty: null
+  })
+
   // comment
 
   const ModelCost = (confs) => {
@@ -25,7 +34,7 @@ export default function Typemodels() {
     return modelCost;
   }
 
-  const [model , setModel ] = useState()
+  const [model , setModel] = useState()
 
   useEffect(() => {
     axios
@@ -41,9 +50,24 @@ export default function Typemodels() {
   }, []);
 
 
+  const updateConfig = (e) => {
+    console.log(updateData);
+    axios.put("/config", {
+      id: updateData.id,
+      name: updateData.name,
+      cost: updateData.cost,
+      running_qty: updateData.running_qty
+    })
+    .then(res => console.log(res))
+    .catch(err => console.error(err))
+  }
 
-  const OpenEditModal = () => {
+  const OpenEditModal = (id) => {
     setIsOpen(!isOpen)
+    setUpdateData({ ...updateData, id: id })
+    const findConfigure = model?.configurations.find(e => e.id === id) 
+    console.log(findConfigure);
+    setModalData(findConfigure)
   }
 
   return (
@@ -119,77 +143,17 @@ export default function Typemodels() {
           {
             model?.configurations?.map((e,i) => {
               return(
-                <div className="conf-boxes">
+                <div key={i + 1} className="conf-boxes">
                  <div className="head-conf-box">
                     <p>Name: {e.name}</p>
                     <p>Cost: <b>{accounting.formatNumber(e.cost,0," ")}</b> so'm</p>
                     <p>Count: {e.running_qty}</p>
                  </div>
-                 <button>Edit conf</button>
+                 <button id={e.id} onClick={(e) => OpenEditModal(e.target.id)}>Edit conf</button>
                 </div>
               );
             })
           }
-        </div>
-        {/* <div className='shelf'>
-         <table>
-            <thead>
-               <tr>
-                  <th>ID</th>
-                  <th>Cost</th>
-                  <th>Quantity</th>
-                  <th>Title</th>
-                  <th>Status</th>
-                  <th>Settings</th>
-               </tr>
-            </thead>
-            <tbody>
-               {model?.configurations?.map((model,index) => {
-                  return(
-                     <tr key={index}>
-                        <td>{index+1}</td>
-                        <td className='titleBook'>{model.cost ? accounting.formatNumber(model.cost,0," ") : "undefined"} so'm</td>
-                        <td> <button>-</button> {model.running_qty} <button>+</button></td>
-                        <td>{model.title ? model.title : "undefined"}</td>
-                        <td>active</td>
-                        <td>
-                           <button 
-                              data-id = {model.id}
-                              // onClick={editBtnHandler}
-                              className='editbtn'>Edit</button>
-                           <button 
-                              data-isbn = {model.id}
-                              // onClick={deleteBtnHandler}
-                              className='delbtn'>
-                              Delete
-                           </button>
-                        </td>
-                     </tr>
-                  )
-               })}
-            </tbody>
-         </table>
-         </div> */}
-
-        <div className="type_model_list">
-          <div className="type_model_card">
-            <h1 className="type_model_heading"><span>Name:</span>{model?.name}</h1>
-            <div className="type_model_prices">
-              <p>
-                <span>Price 1:</span>
-                {model?.price1}
-              </p>
-              <p>
-                <span>Price 2:</span> {model?.price2}
-              </p>
-              <p>
-                <span>Price 3:</span> {model?.price3}
-              </p>
-            </div>
-            <button onClick={() => OpenEditModal()} className="type_model_editbtn">
-              Edit
-            </button>
-          </div>
         </div>
 
       </div>
@@ -203,47 +167,42 @@ export default function Typemodels() {
         className="add_modal_form"
         action=""
       >
-        <h1 className="add_modal_title">Edit</h1>
+        <h1 className="add_modal_title">Update {modalData?.name}</h1>
         <div className="input-groups">
           <div className="input-box">
             <span className="input-label">Edit Name</span>
             <input
-              defaultValue={model?.name}
+              onChange={(e) => setUpdateData({ ...updateData, name: e.target.value })}
+              defaultValue={modalData?.name}
               required={true}
               type="text"
               placeholder="Edit name"
             />
           </div>
           <div className="input-box">
-            <span className="input-label">Edit Price 1</span>
+            <span className="input-label">Edit Cost</span>
             <input  
-              defaultValue={model?.price1}
+              onChange={(e) => setUpdateData({ ...updateData, cost: e.target.value })}
+              defaultValue={model?.cost}
               required={true}
               type="text"
-              placeholder="Edit Price 1"
+              placeholder="Edit cost"
             />
           </div>
           <div className="input-box">
-            <span className="input-label">Edit Price 2</span>
+            <span className="input-label">Edit Count</span>
             <input
-              defaultValue={model?.price2}
+              onChange={(e) => setUpdateData({ ...updateData, running_qty: e.target.value })}
+              defaultValue={modalData?.running_qty}
               required={true}
               type="text"
-              placeholder="Edit Price 2"
+              placeholder="Edit count"
             />
-          <div className="input-box">
-            <span className="input-label">Edit Price 3</span>
-            <input
-              defaultValue={model?.price3}
-              required={true}
-              type="text"
-              placeholder="Edit Price 3"
-            />
-          </div>
+          
           </div>
         </div>
-        <button className="add_modal_submit_btn">
-            edit
+        <button type="button" onClick={(e) => updateConfig(e)} className="add_modal_submit_btn">
+            Update
         </button>
       </form>
     </div>

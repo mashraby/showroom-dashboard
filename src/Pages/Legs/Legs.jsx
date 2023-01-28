@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import axios from "axios";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
@@ -6,12 +7,34 @@ import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 
 export default function Legs() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
+  const [legs, setlegs] = useState([]);
+  const [legName, setLegName] = useState("");
 
   const data = {
     headerInfos: {
       title: "Legs",
       btnTitle: "Add Leg",
     },
+  };
+
+  useEffect(() => {
+    axios
+      .get("/legs")
+      .then((res) => setlegs(res.data))
+      .catch((err) => console.error(err));
+  }, []);
+
+  console.log(legs)
+
+  const sendLeg = (e) => {
+    e.preventDefault();
+
+    axios
+      .post("/leg", {
+        name: legName,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -56,6 +79,38 @@ export default function Legs() {
             </div>
           </div>
         </div>
+        {
+            legs?.map((item, index) => {
+              return (
+                <div key={index + 1} className="products-row">
+                  <button className="cell-more-button">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="feather feather-more-vertical"
+                    >
+                      <circle cx="12" cy="12" r="1" />
+                      <circle cx="12" cy="5" r="1" />
+                      <circle cx="12" cy="19" r="1" />
+                    </svg>
+                  </button>
+                  <div className="product-cell image">
+                    <span>{index + 1}</span>
+                  </div>
+                  <div className="product-cell category">
+                    <span className="cell-label">Leg Name:</span>
+                    {item.name}
+                  </div>
+                </div>
+              );
+            })}
       </div>
 
       <div
@@ -64,7 +119,7 @@ export default function Legs() {
         className="add_modal"
       ></div>
       <form
-        // onSubmit={(e) => sendTissue(e)}
+        onSubmit={(e) => sendLeg(e)}
         style={isOpen ? { top: "50%" } : { top: "-100%" }}
         className="add_modal_form"
         action=""
@@ -76,44 +131,12 @@ export default function Legs() {
             <input
               required={true}
               type="text"
-            //   onChange={(e) => setTissueName(e.target.value)}
+              onChange={(e) => setLegName(e.target.value)}
               placeholder="leg name"
             />
           </div>
-          {/* <div className="input-box">
-            <span className="input-label">Enter a tissue cost</span>
-            <input
-              required={true}
-              value={accounting.formatNumber(tissueCost, 0, " ")}
-              type="text"
-              onChange={(e) => setTissueCost(accounting.unformat(e.target.value))}
-              placeholder="tissue cost"
-            />
-          </div>
-          <div className="input-box">
-            <span className="input-label">Enter a tissue price 1</span>
-            <input
-              required={true}
-              value={accounting.formatNumber(tissuePrice1, 0, " ")}
-              type="text"
-              onChange={(e) => setTissuePrice1(accounting.unformat(e.target.value))}
-              placeholder="tissue price 1"
-            />
-          </div>
-          <div className="input-box">
-            <span className="input-label">Enter a tissue price 2</span>
-            <input
-              required={true}
-              value={accounting.formatNumber(tissuePrice2, 0, " ")}
-              type="text"
-              onChange={(e) => setTissuePrice2(accounting.unformat(e.target.value))}
-              placeholder="tissue price 2"
-            />
-          </div> */}
         </div>
-        <button className="add_modal_submit_btn">
-            add
-        </button>
+        <button className="add_modal_submit_btn">add</button>
       </form>
     </div>
   );

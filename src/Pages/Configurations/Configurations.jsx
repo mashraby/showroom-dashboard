@@ -11,14 +11,14 @@ export default function Configurations() {
   const [sendConfigurationLoad, setSendConfigurationLoad] = useState(false);
   const [ConfigurationName, setConfigurationName] = useState("");
   const [configurations, setConfigurations] = useState([]);
-  const [types, setTypes] = useState([])
-  const [models, setModels] = useState([])
-  const [running_qty , setRunningQty ] = useState()
-  const [selectType, setSelectType] = useState("684ba7e9-7c95-4173-bfcf-3738116c8242")
-  const [selectModel, setSelectModel] = useState("")
-
+  const [types, setTypes] = useState([]);
+  const [models, setModels] = useState([]);
+  const [running_qty , setRunningQty ] = useState();
+  const [selectType, setSelectType] = useState("684ba7e9-7c95-4173-bfcf-3738116c8242");
+  const [selectModel, setSelectModel] = useState("");
   const [ cost , setCost ] = useState()
   const [ title , setTitle ] = useState()
+ 
 
   const data = {
     headerInfos: {
@@ -59,7 +59,6 @@ export default function Configurations() {
   }, [selectType])
 
   useEffect(() => {
-
     axios
       .get("/types")
       .then((res) => {
@@ -207,8 +206,8 @@ export default function Configurations() {
           </div>
           <div className="input-box">
             <span className="input-label">Choose a type</span>
-            <select onChange={(e) => setSelectType(e.target.value)} name="" id="">
-              <option value="none" disabled selected hidden>Choose ...</option>
+            <select defaultValue="Choose ..." onChange={(e) => setSelectType(e.target.value)} >
+              <option value="Choose ..." disabled hidden>Choose ...</option>
               {types &&
                 types.map((el) => {
                   return <option key={el.id} value={el.id}>{el.name}</option>;
@@ -217,8 +216,8 @@ export default function Configurations() {
           </div>
           <div className="input-box">
             <span className="input-label">Choose a model</span>
-            <select onChange={(e) => setSelectModel(e.target.value)} name="" id="">
-              <option value="none" disabled selected hidden>Choose ...</option>
+            <select defaultValue="Choose ..." onChange={(e) => setSelectModel(e.target.value)} name="" id="">
+              <option value="Choose ..." disabled hidden>Choose ...</option>
               {models &&
                 models.map((el) => {
                   return <option key={el.id} value={el.id}>{el.name}</option>;

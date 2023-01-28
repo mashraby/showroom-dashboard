@@ -38,6 +38,8 @@ export default function Companys() {
     setSendCompLoad(true);
     setIsSpinner(true);
 
+
+
     axios
       .post("/company", {
         headers: {
@@ -210,10 +212,11 @@ export default function Companys() {
           <div className="input-box">
             <span className="input-label">Choose a company status</span>
             <select
+              defaultValue="Chose a status"
               required={true}
               onChange={(e) => setCompanyStatus(e.target.value)}
             >
-              <option selected={true} disabled>
+              <option value="Chose a status" disabled hidden>
                 Choose a status
               </option>
               <option value="FACTORY">FACTORY</option>

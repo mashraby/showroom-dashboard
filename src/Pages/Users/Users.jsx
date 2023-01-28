@@ -12,12 +12,15 @@ export default function Users() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
   const { users } = useContext(GetFetchContext);
   const { roles } = useContext(GetFetchContext);
-  const [loading, setLoading] = useState(false)
-  const [ userData, setUserData ] = useState({
+  const [companys, setCompanys] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const access_token = localStorage.getItem("token");
+  const [userData, setUserData] = useState({
     username: "",
     password: "",
-    role: ""
-  }) 
+    role: "",
+    company: "",
+  });
 
   const data = {
     headerInfos: {
@@ -27,22 +30,32 @@ export default function Users() {
   };
 
   const sendUserData = (e) => {
-    e.preventDefault()
-    setLoading(true)
-    console.log(userData);
-    axios.post("/user", {
-      username: userData.username,
-      password: userData.password, 
-      roleId: userData.role
-    })
-    .then((res) => {
-      if(res && res.status === 200) {
-        window.location.reload()
-      }
-    })
-    .catch(err => console.log(err))
-    .finally(() => setLoading(false))
-  }
+    e.preventDefault();
+    setLoading(true);
+
+    axios
+      .post("/signup", {
+        role: userData.role,
+        company: userData.company,
+        username: userData.username,
+        password: userData.password,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    axios
+      .get("/company", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+      .then((res) => setCompanys(res.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className="app-container">
@@ -184,24 +197,73 @@ export default function Users() {
         <div className="input-groups">
           <div className="input-box">
             <span className="input-label">Enter a username</span>
-            <input required={true} onChange={(e) => setUserData({ ...userData, username: e.target.value })} type="text" placeholder="Username" />
+            <input
+              required={true}
+              onChange={(e) =>
+                setUserData({ ...userData, username: e.target.value })
+              }
+              type="text"
+              placeholder="Username"
+            />
           </div>
           <div className="input-box">
             <span className="input-label">Enter a password</span>
-            <input required={true} onChange={(e) => setUserData({ ...userData, password: e.target.value })} type="password" placeholder="password" />
+            <input
+              required={true}
+              onChange={(e) =>
+                setUserData({ ...userData, password: e.target.value })
+              }
+              type="password"
+              placeholder="password"
+            />
           </div>
           <div className="input-box">
             <span className="input-label">Choose a role</span>
-            <select onChange={(e) => setUserData({ ...userData, role: e.target.value })} name="" id="">
+            <select
+              defaultValue="Choose a role"
+              onChange={(e) =>
+                setUserData({ ...userData, role: e.target.value })
+              }
+              name=""
+              id=""
+            >
+              <option value="Choose a role" disabled>Choose a role</option>
               {roles &&
                 roles.map((el) => {
-                  return <option key={el.id} value={el.id}>{el.role_name}</option>;
+                  return (
+                    <option key={el.id} value={el.id}>
+                      {el.role_name}
+                    </option>
+                  );
+                })}
+            </select>
+          </div>
+          <div className="input-box">
+            <span className="input-label">Choose a company</span>
+            <select
+              defaultValue="Choose a company"
+              onChange={(e) =>
+                setUserData({ ...userData, company: e.target.value })
+              }
+            >
+              <option value="Choose a company" disabled hidden>
+                Choose a company
+              </option>
+              {companys &&
+                companys.map((el) => {
+                  return (
+                    <option key={el.id} value={el.id}>
+                      {el.name}
+                    </option>
+                  );
                 })}
             </select>
           </div>
         </div>
 
-        <button className="add_modal_submit_btn">{loading ? "loading..." : "Add User"}</button>
+        <button className="add_modal_submit_btn">
+          {loading ? "loading..." : "Add User"}
+        </button>
       </form>
     </div>
   );
