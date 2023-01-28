@@ -50,7 +50,6 @@ body {
 }
 
 
-
 .edit-price-section {
   display: flex;
   align-items: center;
@@ -171,7 +170,11 @@ tr:hover {
   padding: 7px;
   font-size: 15px;
   cursor: pointer;
-  background-color: #24a0ed ;
+  background-color: #24a0ed;
   color: white;
   border: none;
+}
+
+button {
+  cursor: pointer;
 }
