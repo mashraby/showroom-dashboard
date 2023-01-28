@@ -14,6 +14,7 @@ import { Provider as GetFetchProvider } from "./Context/GetFetchContext/GetFetch
 import Typemodels from "./Pages/Typemodels/Typemodels";
 import Configurations from "./Pages/Configurations/Configurations";
 import Legs from "./Pages/Legs/Legs";
+import TissueConf from "./Pages/TissueConf/Tissueconf";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/typemodels/:id" element={<Typemodels />} />
             <Route path="/configurations" element={<Configurations />} />
             <Route path="/tissues" element={<Tissues />} />
+            <Route path="/tissue/:id" element={<TissueConf />} />
             <Route path="/legs" element={<Legs />} />
           </Route>
           <Route path="/" element={<Public />}>

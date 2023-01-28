@@ -5,6 +5,7 @@ import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import accounting from 'accounting';
+import { Link } from "react-router-dom";
 
 export default function Tissues() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
@@ -141,7 +142,8 @@ export default function Tissues() {
           {tissues &&
             tissues.map((item, index) => {
               return (
-                <div key={index + 1} className="products-row">
+                <Link to={`/tissue/${item.id}`}>
+                  <div key={index + 1} className="products-row">
                   <button className="cell-more-button">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -181,6 +183,7 @@ export default function Tissues() {
                     <span className="cell-label">Tissue Price 2:</span>{accounting.formatNumber(item.price2, 0, " ")}
                   </div>
                 </div>
+                </Link>
               );
             })}
         </div>
