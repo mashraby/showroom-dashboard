@@ -31,12 +31,13 @@ export default function Models() {
         name: modelName,
         type: selectType
       })
-      .then((res) => {
-        if (res && res.status === 200) {
-          setIsOpen(!isOpen);
-        }
-      })
-      .finally(() => setSendModelLoad(false));
+      .then((res) => console.log(res))
+      .finally(() => {
+        setSendModelLoad(false)
+        setIsOpen(false)
+        axios.get("/models")
+          .then(res => setModels(res.data))
+      });
   };
 
   useEffect(() => {
@@ -51,7 +52,6 @@ export default function Models() {
     axios
       .get("/models")
       .then((res) => {
-        console.log(res.data);
         setModels(res.data)
       })
       .catch((err) => console.log(err));

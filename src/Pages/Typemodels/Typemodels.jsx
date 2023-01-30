@@ -7,11 +7,13 @@ import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import "./Typemodel.css";
 
 export default function Typemodels() {
-  const { id } = useParams();
+  const { id, tissueId } = useParams();
 
-  const { isOpen, setIsOpen } = useContext(OpenModal);
+  const { isOpen, setIsOpen, isUpdateOpen, setIsUpdateOpen } =
+    useContext(OpenModal);
 
   const [modalData, setModalData] = useState({});
+  const [confs, setConfs] = useState({});
 
   const [updateData, setUpdateData] = useState({
     id: "",
@@ -35,6 +37,23 @@ export default function Typemodels() {
 
   const [model, setModel] = useState();
 
+  const filterObj = (obj) => {
+    console.log(obj);
+
+    Object.keys(obj).forEach((key) => {
+      if (obj[key] === null) {
+        delete obj[key];
+      }
+
+      return obj;
+    });
+
+    axios
+      .put("/config", obj)
+      .then((res) => setConfs(res))
+      .catch((err) => console.error(err));
+  };
+
   useEffect(() => {
     axios
       .get(`/model/${id}`)
@@ -44,20 +63,12 @@ export default function Typemodels() {
         setModel(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
 
-  const updateConfig = () => {
-    console.log(updateData);
     axios
-      .put("/config", {
-        id: updateData.id,
-        name:"",
-        cost: updateData.cost,
-        running_qty: updateData.running_qty,
-      })
+      .get(`/confs/${tissueId}`)
       .then((res) => console.log(res))
-      .catch((err) => console.error(err));
-  };
+      .catch((err) => console.log(err));
+  }, []);
 
   const OpenEditModal = (id) => {
     setIsOpen(!isOpen);
@@ -67,6 +78,11 @@ export default function Typemodels() {
     setModalData(findConfigure);
   };
 
+  const openPrecentEditModal = (id) => {
+    setIsUpdateOpen(true);
+    // setMyId(id)
+  };
+
   return (
     <div className="app-container">
       <Navbar />
@@ -74,92 +90,17 @@ export default function Typemodels() {
         <h2 style={{ color: "white", textAlign: "center", padding: 25 }}>
           Model: {model?.name}
         </h2>
-        {/* <p>Name: {model?.name}</p>
-          <p>price 1: <b>{model?.price1}</b> %</p>
-          <p>price 2: <b>{model?.price2}</b> %</p>
-          <p>price 3: <b>{model?.price3}</b> %</p> */}
+
         <div className="edit-price-section">
-          <div>
-            <div>
-              <h3>Factory</h3>
-              <hr />
-              <br />
+          <div className="conf-boxes">
+            <div className="head-conf-box">
+              <p>Name: {}</p>
               <p>
-                Cost:{" "}
-                <b>
-                  {accounting.formatNumber(
-                    ModelCost(
-                      model?.configurations ? model.configurations : []
-                    ),
-                    0,
-                    " "
-                  )}
-                </b>{" "}
-                So'm
+                Cost: <b>0</b> so'm
               </p>
-              <p>Percent: {model?.price1} %</p>
-              <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
-              <br />
-              <p>
-                Avarage: <b>{accounting.formatNumber(452147000, 0, " ")}</b>{" "}
-                so'm
-              </p>
+              <p>Count: 0</p>
             </div>
-            <button>Edit price</button>
-          </div>
-          <div>
-            <div>
-              <h3>Showroom</h3>
-              <hr />
-              <br />
-              <p>
-                Cost: <b>{588246000}</b>
-              </p>
-              <p>percent: {model?.price2} %</p>
-              <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
-              <br />
-              <p>
-                Avarage: <b>{accounting.formatNumber(452147000, 0, " ")}</b>{" "}
-                so'm
-              </p>
-            </div>
-            <button>Edit price</button>
-          </div>
-          <div>
-            <div>
-              <h3>Diller</h3>
-              <hr />
-              <br />
-              <p>
-                Cost: <b>{accounting.formatNumber(4523000, 0, " ")}</b>
-              </p>
-              <p>percent:12 %</p>
-              <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
-              <br />
-              <p>
-                Avarage: <b>{accounting.formatNumber(452147000, 0, " ")}</b>{" "}
-                so'm
-              </p>
-            </div>
-            <button>Edit price</button>
-          </div>
-          <div>
-            <div className="head-price-box">
-              <h3>Aksiya</h3>
-              <hr />
-              <br />
-              <p>
-                Cost: <b>458752000</b>
-              </p>
-              <p>percent: {model?.price2} %</p>
-              <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
-              <br />
-              <p>
-                Finally Price:{" "}
-                <b>{accounting.formatNumber(452147000, 0, " ")}</b> so'm
-              </p>
-            </div>
-            <button>Edit price</button>
+            <button>Edit conf</button>
           </div>
         </div>
 
@@ -186,6 +127,7 @@ export default function Typemodels() {
           })}
         </div>
       </div>
+
       <div
         onClick={() => setIsOpen(!isOpen)}
         style={isOpen ? { display: "block" } : { display: "none" }}
@@ -237,10 +179,36 @@ export default function Typemodels() {
         </div>
         <button
           type="button"
-          onClick={(e) => updateConfig(e)}
+          onClick={(e) => filterObj(e)}
           className="add_modal_submit_btn"
         >
           Update
+        </button>
+      </form>
+
+      <div
+        onClick={() => setIsUpdateOpen(!isUpdateOpen)}
+        style={isUpdateOpen ? { display: "block" } : { display: "none" }}
+        className="add_modal"
+      ></div>
+      <form
+        style={isUpdateOpen ? { top: "50%" } : { top: "-100%" }}
+        className="add_modal_form"
+      >
+        <h1 className="add_modal_title">Edit </h1>
+        <div className="input-groups">
+          <div className="input-box">
+            <span className="input-label">Edit precent</span>
+            <input
+              defaultValue={modalData?.name}
+              required={true}
+              type="text"
+              placeholder="Edit precent"
+            />
+          </div>
+        </div>
+        <button type="button" className="add_modal_submit_btn">
+          Edit Precent
         </button>
       </form>
     </div>

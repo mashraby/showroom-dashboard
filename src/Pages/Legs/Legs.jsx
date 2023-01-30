@@ -9,6 +9,7 @@ export default function Legs() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
   const [legs, setlegs] = useState([]);
   const [legName, setLegName] = useState("");
+  const [sendLegLoad, setSendLegLoad] = useState(false);
 
   const data = {
     headerInfos: {
@@ -28,12 +29,19 @@ export default function Legs() {
 
   const sendLeg = (e) => {
     e.preventDefault();
+    setSendLegLoad(true);
 
     axios
       .post("/leg", {
         name: legName,
       })
       .then((res) => console.log(res))
+      .finally(() => {
+        setIsOpen(false);
+        setSendLegLoad(false);
+        axios.get("/legs")
+          .then(res => setlegs(res.data))
+      })
       .catch((err) => console.error(err));
   };
 
@@ -135,7 +143,9 @@ export default function Legs() {
             />
           </div>
         </div>
-        <button className="add_modal_submit_btn">add</button>
+        <button className="add_modal_submit_btn">
+          {sendLegLoad ? "loading..." : "Add Leg"}
+        </button>
       </form>
     </div>
   );

@@ -19,7 +19,6 @@ export default function Configurations() {
   const [ cost , setCost ] = useState()
   const [ title , setTitle ] = useState()
  
-
   const data = {
     headerInfos: {
       title: "Configurations",
@@ -39,11 +38,7 @@ export default function Configurations() {
         title,
         running_qty
       })
-      .then((res) => {
-        if (res && res.status === 200) {
-          setIsOpen(!isOpen);
-        }
-      })
+      .then((res) => console.log(res))
       .finally(() => setSendConfigurationLoad(false));
   };
 
@@ -74,6 +69,9 @@ export default function Configurations() {
         setConfigurations(res.data);
       })
       .catch((err) => console.log(err));
+
+    // axios.get("/models")
+    //   .then(res => res)
   }, []);
 
   return (
