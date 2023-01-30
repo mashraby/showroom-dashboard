@@ -25,7 +25,12 @@ export default function Furnute_types() {
           setIsOpen(!isOpen);
         }
       })
-      .finally(() => setSendTypeLoad(false));
+      .finally(() => {
+        setSendTypeLoad(false)
+        setIsOpen(false)
+        axios.get("types")
+          .then(res => setTypes(res.data))
+      });
   };
 
   useEffect(() => {

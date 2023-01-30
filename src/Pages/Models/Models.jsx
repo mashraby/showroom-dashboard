@@ -40,20 +40,19 @@ export default function Models() {
   };
 
   useEffect(() => {
-
     axios
-      .get("/types")
-      .then((res) => {
-        console.log(res)
-        setTypes(res.data)
-      })
-      .catch((err) => console.log(err))
-
+    .get("/types")
+    .then((res) => {
+      setTypes(res.data)
+    })
+    .catch((err) => console.log(err))
+  }, [])
+  useEffect(() => {
     axios
       .get("/models")
       .then((res) => {
-        console.log(res);
-        setModels(res.data);
+        console.log(res.data);
+        setModels(res.data)
       })
       .catch((err) => console.log(err));
   }, []);

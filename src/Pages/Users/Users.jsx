@@ -7,14 +7,19 @@ import admin from "../../Assets/img/admin.jpg";
 import { GetFetchContext } from "../../Context/GetFetchContext/GetFetchContext";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import axios from "axios";
+import Toast from "../../Components/Toast/Toast";
 
 export default function Users() {
-  const { isOpen, setIsOpen } = useContext(OpenModal);
-  const { users } = useContext(GetFetchContext);
+  const { isOpen, setIsOpen, setIsToastOpen } = useContext(OpenModal);
+  const [users, setUsers] = useState([]);
   const { roles } = useContext(GetFetchContext);
   const [companys, setCompanys] = useState([]);
   const [loading, setLoading] = useState(false);
   const access_token = localStorage.getItem("token");
+  const [toastingData, setToastingData] = useState({
+    message: "",
+    status: null
+  })
   const [userData, setUserData] = useState({
     username: "",
     password: "",
@@ -41,9 +46,21 @@ export default function Users() {
         password: userData.password,
       })
       .then((res) => console.log(res))
+      .finally(() => {
+        setLoading(false)
+        setIsOpen(false)
+        axios.get("/users")
+          .then(res => setUsers(res.data))
+      })
       .catch((err) => console.log(err))
-      .finally(() => setLoading(false));
   };
+
+  useEffect(() => {
+    axios
+      .get("/users")
+      .then((res) => setUsers(res.data))
+      .catch((err) => console.error(err));
+  }, []);
 
   useEffect(() => {
     axios
@@ -227,7 +244,9 @@ export default function Users() {
               name=""
               id=""
             >
-              <option value="Choose a role" disabled>Choose a role</option>
+              <option value="Choose a role" disabled>
+                Choose a role
+              </option>
               {roles &&
                 roles.map((el) => {
                   return (
@@ -265,6 +284,7 @@ export default function Users() {
           {loading ? "loading..." : "Add User"}
         </button>
       </form>
+      {/* <Toast data={toastingData} /> */}
     </div>
   );
 }

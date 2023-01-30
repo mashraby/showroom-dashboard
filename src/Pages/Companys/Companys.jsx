@@ -38,8 +38,6 @@ export default function Companys() {
     setSendCompLoad(true);
     setIsSpinner(true);
 
-
-
     axios
       .post("/company", {
         headers: {
@@ -49,29 +47,18 @@ export default function Companys() {
         name: companyName,
         status: companyStatus,
       })
-      .then((res) => {
-        if (res) {
-          setResStatus(res.status);
-          setResMessage(res.message);
-          setIsToastOpen(true);
-          setTimeout(() => {
-            setIsToastOpen(false);
-            setIsOpen(!isOpen);
-          }, 3000);
-        }
-      })
-      .catch((err) => {
-        setResStatus(err.status);
-        setResMessage(err.message);
-        setIsToastOpen(true);
-        setTimeout(() => {
-          setIsToastOpen(false);
-          setIsOpen(!isOpen);
-        }, 3000);
-      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
       .finally(() => {
         setSendCompLoad(false);
-        setIsSpinner(false);
+        setIsOpen(false)
+        axios.get("company", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+        })
+        .then(res => setCompanys(res.data))
       });
   };
 
@@ -232,7 +219,7 @@ export default function Companys() {
         </button>
       </form>
 
-      <Toast res={{ status: resStatus, message: resMessage }} />
+      {/* <Toast res={{ status: resStatus, message: resMessage }} /> */}
     </div>
   );
 }

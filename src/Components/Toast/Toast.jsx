@@ -3,24 +3,24 @@ import { useContext } from "react";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import "./Toast.css";
 
-export default function Toast({ res }) {
+export default function Toast({ data }) {
 
   const { isToastOpen } = useContext(OpenModal)
 
-  const { status, message } = res
+  const { message, status } = data
 
   return (
     <div
       style={{display: isToastOpen ? "block" : "none"}}
       className={`toast ${
-        status !== 200 ? "toast--warning" : "toast--success"
+        status === 200 ? "toast--success" : "toast--warning"
       }`}
       role="alert"
       aria-live="assertive"
       aria-atomic="true"
     >
       <div className="toast__icon">
-        {status !== 200 ? (
+        {status !== 200 || 201 ? (
           <svg
             aria-hidden="true"
             focusable="false"
@@ -55,7 +55,7 @@ export default function Toast({ res }) {
         )}
       </div>
       <div className="toast__content">
-        <h2>{status !== 200 ? "Error" : "Successfull"}</h2>
+        <h2>{status === 200 ? "Successfull" : "Error"}</h2>
         <p>
           {message}
         </p>
