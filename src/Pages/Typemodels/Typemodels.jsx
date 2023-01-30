@@ -14,6 +14,7 @@ export default function Typemodels() {
 
   const [modalData, setModalData] = useState({});
   const [confs, setConfs] = useState({});
+  const [updateLoad, setUpdateLoad] = useState(false);
 
   const [updateData, setUpdateData] = useState({
     id: "",
@@ -27,7 +28,6 @@ export default function Typemodels() {
   const ModelCost = (confs) => {
     let modelCost = 0;
 
-    // if()
     confs?.map((e) => {
       return (modelCost = modelCost + e.cost * e.running_qty);
     });
@@ -38,7 +38,7 @@ export default function Typemodels() {
   const [model, setModel] = useState();
 
   const filterObj = (obj) => {
-    console.log(obj);
+    setUpdateLoad(true);
 
     Object.keys(obj).forEach((key) => {
       if (obj[key] === null) {
@@ -50,7 +50,15 @@ export default function Typemodels() {
 
     axios
       .put("/config", obj)
-      .then((res) => setConfs(res))
+      .then((res) => {
+        setUpdateLoad(true);
+        setConfs(res);
+      })
+      .finally(() => {
+        setUpdateLoad(false);
+        setIsOpen(false);
+        axios.get(`/model/${id}`).then((res) => setModel(res.data));
+      })
       .catch((err) => console.error(err));
   };
 
@@ -74,13 +82,11 @@ export default function Typemodels() {
     setIsOpen(!isOpen);
     setUpdateData({ ...updateData, id: id });
     const findConfigure = model?.configurations.find((e) => e.id === id);
-    console.log(findConfigure);
     setModalData(findConfigure);
   };
 
   const openPrecentEditModal = (id) => {
     setIsUpdateOpen(true);
-    // setMyId(id)
   };
 
   return (
@@ -92,15 +98,125 @@ export default function Typemodels() {
         </h2>
 
         <div className="edit-price-section">
-          <div className="conf-boxes">
-            <div className="head-conf-box">
-              <p>Name: {}</p>
+          <div>
+            <div>
+              <h3>Factory</h3>
+              <hr />
+              <br />
               <p>
-                Cost: <b>0</b> so'm
+                Cost:
+                <b>
+                  {accounting.formatNumber(
+                    ModelCost(
+                      model?.configurations ? model.configurations : []
+                    ),
+                    0,
+                    " "
+                  )}
+                </b>{" "}
+                So'm
               </p>
-              <p>Count: 0</p>
+              <p>Percent: {model?.price1} %</p>
+              <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
+              <br />
+              <p>
+                Avarage: <b>{accounting.formatNumber(452147000, 0, " ")}</b>{" "}
+                so'm
+              </p>
             </div>
-            <button>Edit conf</button>
+            <button onClick={(e) => openPrecentEditModal(e.target.id)}>
+              Edit price
+            </button>
+          </div>
+          <div>
+            <div>
+              <h3>Showroom</h3>
+              <hr />
+              <br />
+              <p>
+                Cost:
+                <b>
+                  {accounting.formatNumber(
+                    ModelCost(
+                      model?.configurations ? model.configurations : []
+                    ),
+                    0,
+                    " "
+                  )}
+                </b>{" "}
+                So'm
+              </p>
+              <p>Percent: {model?.price1} %</p>
+              <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
+              <br />
+              <p>
+                Avarage: <b>{accounting.formatNumber(452147000, 0, " ")}</b>{" "}
+                so'm
+              </p>
+            </div>
+            <button onClick={(e) => openPrecentEditModal(e.target.id)}>
+              Edit price
+            </button>
+          </div>
+          <div>
+            <div>
+              <h3>Diller</h3>
+              <hr />
+              <br />
+              <p>
+                Cost:
+                <b>
+                  {accounting.formatNumber(
+                    ModelCost(
+                      model?.configurations ? model.configurations : []
+                    ),
+                    0,
+                    " "
+                  )}
+                </b>{" "}
+                So'm
+              </p>
+              <p>Percent: {model?.price1} %</p>
+              <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
+              <br />
+              <p>
+                Avarage: <b>{accounting.formatNumber(452147000, 0, " ")}</b>{" "}
+                so'm
+              </p>
+            </div>
+            <button onClick={(e) => openPrecentEditModal(e.target.id)}>
+              Edit price
+            </button>
+          </div>
+          <div>
+            <div>
+              <h3>aksiya</h3>
+              <hr />
+              <br />
+              <p>
+                Cost:
+                <b>
+                  {accounting.formatNumber(
+                    ModelCost(
+                      model?.configurations ? model.configurations : []
+                    ),
+                    0,
+                    " "
+                  )}
+                </b>{" "}
+                So'm
+              </p>
+              <p>Percent: {model?.price1} %</p>
+              <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
+              <br />
+              <p>
+                Avarage: <b>{accounting.formatNumber(452147000, 0, " ")}</b>{" "}
+                so'm
+              </p>
+            </div>
+            <button onClick={(e) => openPrecentEditModal(e.target.id)}>
+              Edit price
+            </button>
           </div>
         </div>
 
@@ -138,7 +254,7 @@ export default function Typemodels() {
         className="add_modal_form"
         action=""
       >
-        <h1 className="add_modal_title">Update {modalData?.name}</h1>
+        <h1 className="add_modal_title">Edit {modalData?.name}</h1>
         <div className="input-groups">
           <div className="input-box">
             <span className="input-label">Edit Name</span>
@@ -158,7 +274,7 @@ export default function Typemodels() {
               onChange={(e) =>
                 setUpdateData({ ...updateData, cost: e.target.value })
               }
-              defaultValue={model?.cost}
+              defaultValue={modalData?.cost}
               required={true}
               type="text"
               placeholder="Edit cost"
@@ -178,11 +294,11 @@ export default function Typemodels() {
           </div>
         </div>
         <button
+          onClick={() => filterObj(updateData)}
           type="button"
-          onClick={(e) => filterObj(e)}
           className="add_modal_submit_btn"
         >
-          Update
+          {updateLoad ? "loading..." : "Edit Config"}
         </button>
       </form>
 
@@ -195,20 +311,15 @@ export default function Typemodels() {
         style={isUpdateOpen ? { top: "50%" } : { top: "-100%" }}
         className="add_modal_form"
       >
-        <h1 className="add_modal_title">Edit </h1>
+        <h1 className="add_modal_title">Edit</h1>
         <div className="input-groups">
           <div className="input-box">
             <span className="input-label">Edit precent</span>
-            <input
-              defaultValue={modalData?.name}
-              required={true}
-              type="text"
-              placeholder="Edit precent"
-            />
+            <input required={true} type="text" placeholder="Edit precent" />
           </div>
         </div>
         <button type="button" className="add_modal_submit_btn">
-          Edit Precent
+          add
         </button>
       </form>
     </div>
