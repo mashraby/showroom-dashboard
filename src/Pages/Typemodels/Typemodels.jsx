@@ -13,15 +13,30 @@ export default function Typemodels() {
     useContext(OpenModal);
 
   const [modalData, setModalData] = useState({});
+  const [precent, setPrecent] = useState(null);
   const [confs, setConfs] = useState({});
   const [updateLoad, setUpdateLoad] = useState(false);
-
   const [updateData, setUpdateData] = useState({
     id: "",
     name: null,
     cost: null,
     running_qty: null,
   });
+
+  // let allBtns = document.querySelectorAll(".aksiya_wrapper button");
+  // let allPrecents = document.querySelectorAll(".precent");
+
+  // useEffect(() => {
+  //   allBtns.forEach((e) => {
+  //     e.addEventListener("click", (evt) => {
+  //       allPrecents.forEach((e) => {
+  //         if (e.id === evt.target.id) {
+  //           setPrecent(e.textContent.split(" ").filter((e) => e == isNaN(e)));
+  //         }
+  //       });
+  //     });
+  //   });
+  // }, []);
 
   // comment
 
@@ -47,6 +62,8 @@ export default function Typemodels() {
 
       return obj;
     });
+
+    console.log(obj.id, model?.configurations.find((e) => e.id === obj.id).id);
 
     axios
       .put("/config", obj)
@@ -85,8 +102,9 @@ export default function Typemodels() {
     setModalData(findConfigure);
   };
 
-  const openPrecentEditModal = (id) => {
+  const openPrecentEditModal = (precent) => {
     setIsUpdateOpen(true);
+    setPrecent(precent)
   };
 
   return (
@@ -98,7 +116,7 @@ export default function Typemodels() {
         </h2>
 
         <div className="edit-price-section">
-          <div>
+          <div className="aksiya_wrapper">
             <div>
               <h3>Factory</h3>
               <hr />
@@ -116,7 +134,9 @@ export default function Typemodels() {
                 </b>{" "}
                 So'm
               </p>
-              <p>Percent: {model?.price1} %</p>
+              <p id="1" className="precent">
+                Percent: {model?.price1} %
+              </p>
               <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
               <br />
               <p>
@@ -124,11 +144,11 @@ export default function Typemodels() {
                 so'm
               </p>
             </div>
-            <button onClick={(e) => openPrecentEditModal(e.target.id)}>
+            <button onClick={() => openPrecentEditModal(model?.price1)}>
               Edit price
             </button>
           </div>
-          <div>
+          <div className="aksiya_wrapper">
             <div>
               <h3>Showroom</h3>
               <hr />
@@ -146,7 +166,9 @@ export default function Typemodels() {
                 </b>{" "}
                 So'm
               </p>
-              <p>Percent: {model?.price1} %</p>
+              <p id="2" className="precent">
+                Percent: {model?.price1} %
+              </p>
               <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
               <br />
               <p>
@@ -154,11 +176,11 @@ export default function Typemodels() {
                 so'm
               </p>
             </div>
-            <button onClick={(e) => openPrecentEditModal(e.target.id)}>
+            <button onClick={() => openPrecentEditModal(model?.price2)}>
               Edit price
             </button>
           </div>
-          <div>
+          <div className="aksiya_wrapper">
             <div>
               <h3>Diller</h3>
               <hr />
@@ -176,7 +198,9 @@ export default function Typemodels() {
                 </b>{" "}
                 So'm
               </p>
-              <p>Percent: {model?.price1} %</p>
+              <p id="3" className="precent">
+                Percent: {model?.price1} %
+              </p>
               <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
               <br />
               <p>
@@ -184,11 +208,11 @@ export default function Typemodels() {
                 so'm
               </p>
             </div>
-            <button onClick={(e) => openPrecentEditModal(e.target.id)}>
+            <button onClick={() => openPrecentEditModal(model?.price3)}>
               Edit price
             </button>
           </div>
-          <div>
+          <div className="aksiya_wrapper">
             <div>
               <h3>aksiya</h3>
               <hr />
@@ -206,7 +230,9 @@ export default function Typemodels() {
                 </b>{" "}
                 So'm
               </p>
-              <p>Percent: {model?.price1} %</p>
+              <p id="4" className="precent">
+                Percent: {model?.price1} %
+              </p>
               <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
               <br />
               <p>
@@ -214,7 +240,7 @@ export default function Typemodels() {
                 so'm
               </p>
             </div>
-            <button onClick={(e) => openPrecentEditModal(e.target.id)}>
+            <button onClick={() => openPrecentEditModal(0)}>
               Edit price
             </button>
           </div>
@@ -315,11 +341,16 @@ export default function Typemodels() {
         <div className="input-groups">
           <div className="input-box">
             <span className="input-label">Edit precent</span>
-            <input required={true} type="text" placeholder="Edit precent" />
+            <input
+              defaultValue={precent}
+              required={true}
+              type="text"
+              placeholder="Edit precent"
+            />
           </div>
         </div>
         <button type="button" className="add_modal_submit_btn">
-          add
+          Edit precent
         </button>
       </form>
     </div>
