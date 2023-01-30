@@ -30,7 +30,7 @@ function App() {
             <Route path="/typemodels/:id" element={<Typemodels />} />
             <Route path="/configurations" element={<Configurations />} />
             <Route path="/tissues" element={<Tissues />} />
-            <Route path="/tissue/:id" element={<TissueConf />} />
+            <Route path="/tissue/:tissueId" element={<TissueConf />} />
             <Route path="/legs" element={<Legs />} />
           </Route>
           <Route path="/" element={<Public />}>

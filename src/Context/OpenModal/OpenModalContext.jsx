@@ -6,6 +6,7 @@ function Provider({ children }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isSpinner, setIsSpinner] = useState(false);
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false)
 
 
   return (
@@ -16,7 +17,9 @@ function Provider({ children }) {
         isToastOpen,
         setIsToastOpen,
         isSpinner,
-        setIsSpinner
+        setIsSpinner,
+        isUpdateOpen,
+        setIsUpdateOpen
       }}
     >
       {children}
