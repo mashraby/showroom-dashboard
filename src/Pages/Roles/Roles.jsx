@@ -1,25 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
 import seller from "../../Assets/img/seller.jpg";
 import admin from "../../Assets/img/admin.jpg";
 import { useContext } from "react";
-import { GetFetchContext } from "../../Context/GetFetchContext/GetFetchContext";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import axios from "axios";
 import Toast from "../../Components/Toast/Toast";
 
 export default function Roles() {
-
-  const { isOpen, setIsOpen } = useContext(OpenModal);
-  const { roles } = useContext(GetFetchContext);
-  const [msg, setMsg] = useState({
-    status: null
-  })
-
+  const { isOpen, setIsOpen, setIsToastOpen } = useContext(OpenModal);
+  const [roles, setRoles] = useState([]);
   const [roleName, setRoleName] = useState("");
-  const roleNameRef = useRef()
+  const [loading, setLoading] = useState(false);
+  const [toastingData, setToastingData] = useState({
+    status: null,
+    message: "",
+  });
 
   const data = {
     headerInfos: {
@@ -30,19 +28,27 @@ export default function Roles() {
 
   const sendRole = (e) => {
     e.preventDefault();
-
-    if(roleName==="") {
-      roleNameRef.current.classList.add("error-input")
-      roleNameRef.current.placeholder = "role name kiritilishi shart!"
-    }
+    setLoading(true);
 
     axios
       .post("/role", {
         role_name: roleName,
       })
-      .then((res) => setMsg({status: res.status}))
+      .then((res) => console.log(res))
+      .finally(() => {
+        setLoading(false);
+        setIsOpen(false);
+        axios.get("/roles").then((res) => setRoles(res.data));
+      })
       .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    axios
+      .get("/roles")
+      .then((res) => setRoles(res.data))
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <div className="app-container">
@@ -141,16 +147,17 @@ export default function Roles() {
             <span className="input-label">Enter a role name</span>
             <input
               required={true}
-              ref={roleNameRef}
               type="text"
               onChange={(e) => setRoleName(e.target.value)}
               placeholder="role name"
             />
           </div>
         </div>
-        <button className="add_modal_submit_btn">Add Role</button>
+        <button className="add_modal_submit_btn">
+          {loading ? "loading..." : "Add Role"}
+        </button>
       </form>
-      {/* <Toast msg={msg} /> */}
+      {/* <Toast data={toastingData} /> */}
     </div>
   );
 }
