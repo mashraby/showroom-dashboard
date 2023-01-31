@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../Components/Navbar/Navbar";
 import accounting from "accounting";
@@ -13,12 +13,13 @@ export default function Typemodels() {
     useContext(OpenModal);
 
   const [modalData, setModalData] = useState({});
-  const [precents, setPrecents] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const [precent, setPrecent] = useState({
     id: null,
     precent: null,
+    cost: null,
+    nats: null,
+    avg: null,
   });
   const [confs, setConfs] = useState({});
   const [updateLoad, setUpdateLoad] = useState(false);
@@ -91,10 +92,6 @@ export default function Typemodels() {
     const findConfigure = model?.configurations.find((e) => e.id === id);
     setModalData(findConfigure);
   };
-
-  useEffect(() => {
-    console.log(precent);
-  }, [precent]);
 
   const changePrecent = (btnId) => {
     let changeId = Number(btnId);
@@ -182,147 +179,181 @@ export default function Typemodels() {
     }
   };
 
-
   return (
     <div className="app-container">
       <Navbar />
       <div className="app-content">
-        <h2 style={{ color: "white", textAlign: "center", padding: 25 }}>
-          Model: {model?.name}
-        </h2>
+        <Link style={{color: "white"}} to="/models">
+          <h3>{"< Back to models"}</h3>
+        </Link>
+        <div className="products-area-wrapper">
+          <h2 style={{ color: "white", textAlign: "center", padding: 25 }}>
+            Model: {model?.name}
+          </h2>
 
-        <div className="edit-price-section">
-          <div className="aksiya_wrapper">
-            <div>
-              <h3>Factory</h3>
-              <hr />
-              <br />
-              <p>
-                Cost:
-                <b>{accounting.formatNumber(sumMoney, 0, " ")}</b> So'm
-              </p>
-              <p id="1" className="precent">
-                Percent: {model?.price1} %
-              </p>
-              <p>наценка: {accounting.formatNumber(factNats, 0, " ")} So'm</p>
-              <br />
-              <p>
-                Avarage: <b>{accounting.formatNumber(factAvg, 0, " ")}</b> so'm
-              </p>
-            </div>
-            <button
-              onClick={() => {
-                setIsUpdateOpen(true);
-                setPrecent({ id: 1, precent: model?.price1 });
-              }}
-            >
-              Edit price
-            </button>
-          </div>
-          <div className="aksiya_wrapper">
-            <div>
-              <h3>Showroom</h3>
-              <hr />
-              <br />
-              <p>
-                Cost:
-                <b>{accounting.formatNumber(factAvg, 0, " ")}</b> So'm
-              </p>
-              <p id="2" className="precent">
-                Percent: {model?.price2} %
-              </p>
-              <p>наценка: {accounting.formatNumber(showNats, 0, " ")}</p>
-              <br />
-              <p>
-                Avarage: <b>{accounting.formatNumber(showAvg, 0, " ")}</b> so'm
-              </p>
-            </div>
-            <button
-              onClick={() => {
-                setIsUpdateOpen(true);
-                setPrecent({ id: 2, precent: model?.price2 });
-              }}
-            >
-              Edit price
-            </button>
-          </div>
-          <div className="aksiya_wrapper">
-            <div>
-              <h3>Diller</h3>
-              <hr />
-              <br />
-              <p>
-                Cost:
-                <b>{accounting.formatNumber(showAvg, 0, " ")}</b> So'm
-              </p>
-              <p id="3" className="precent">
-                Percent: {model?.price3} %
-              </p>
-              <p>наценка: {accounting.formatNumber(dillNats, 0, " ")}</p>
-              <br />
-              <p>
-                Avarage: <b>{accounting.formatNumber(dilAvg, 0, " ")}</b> so'm
-              </p>
-            </div>
-            <button
-              onClick={() => {
-                setIsUpdateOpen(true);
-                setPrecent({ id: 3, precent: model?.price3 });
-              }}
-            >
-              Edit price
-            </button>
-          </div>
-          <div className="aksiya_wrapper">
-            <div>
-              <h3>aksiya</h3>
-              <hr />
-              <br />
-              <p>
-                Cost:
-                <b>{accounting.formatNumber(dilAvg, 0, " ")}</b> So'm
-              </p>
-              <p id="4" className="precent">
-                Percent: {model?.sale} %
-              </p>
-              <p>наценка: {accounting.formatNumber(aksNats, 0, " ")}</p>
-              <br />
-              <p>
-                Avarage: <b>{accounting.formatNumber(aksAvg, 0, " ")}</b> so'm
-              </p>
-            </div>
-            <button
-              onClick={() => {
-                setIsUpdateOpen(true);
-                setPrecent({ id: 4, precent: model?.sale });
-              }}
-            >
-              Edit price
-            </button>
-          </div>
-        </div>
-
-        <h1 style={{ color: "white", textAlign: "center", padding: 25 }}>
-          Configuration
-        </h1>
-
-        <div className="edit-price-section">
-          {model?.configurations?.map((e, i) => {
-            return (
-              <div key={i + 1} className="conf-boxes">
-                <div className="head-conf-box">
-                  <p>Name: {e.name}</p>
-                  <p>
-                    Cost: <b>{accounting.formatNumber(e.cost, 0, " ")}</b> so'm
-                  </p>
-                  <p>Count: {e.running_qty}</p>
-                </div>
-                <button id={e.id} onClick={(e) => OpenEditModal(e.target.id)}>
-                  Edit conf
-                </button>
+          <div className="edit-price-section">
+            <div className="aksiya_wrapper">
+              <div>
+                <h3>Factory</h3>
+                <hr />
+                <br />
+                <p>
+                  Cost:
+                  <b>{accounting.formatNumber(sumMoney, 0, " ")}</b> So'm
+                </p>
+                <p id="1" className="precent">
+                  Percent: {model?.price1} %
+                </p>
+                <p>наценка: {accounting.formatNumber(factNats, 0, " ")} So'm</p>
+                <br />
+                <p>
+                  Avarage: <b>{accounting.formatNumber(factAvg, 0, " ")}</b>{" "}
+                  so'm
+                </p>
               </div>
-            );
-          })}
+              <button
+                onClick={() => {
+                  setIsUpdateOpen(true);
+                  setPrecent({
+                    id: 1,
+                    precent: model?.price1,
+                    cost: sumMoney,
+                    nats: factNats,
+                    avg: factAvg,
+                  });
+                }}
+              >
+                Edit price
+              </button>
+            </div>
+            <div className="aksiya_wrapper">
+              <div>
+                <h3>Showroom</h3>
+                <hr />
+                <br />
+                <p>
+                  Cost:
+                  <b>{accounting.formatNumber(factAvg, 0, " ")}</b> So'm
+                </p>
+                <p id="2" className="precent">
+                  Percent: {model?.price2} %
+                </p>
+                <p>наценка: {accounting.formatNumber(showNats, 0, " ")}</p>
+                <br />
+                <p>
+                  Avarage: <b>{accounting.formatNumber(showAvg, 0, " ")}</b>{" "}
+                  so'm
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setIsUpdateOpen(true);
+                  setPrecent({
+                    ...precent,
+                    id: 2,
+                    precent: model?.price2,
+                    cost: factAvg,
+                    nats: showNats,
+                    avg: showAvg,
+                  });
+                }}
+              >
+                Edit price
+              </button>
+            </div>
+            <div className="aksiya_wrapper">
+              <div>
+                <h3>Diller</h3>
+                <hr />
+                <br />
+                <p>
+                  Cost:
+                  <b>{accounting.formatNumber(showAvg, 0, " ")}</b> So'm
+                </p>
+                <p id="3" className="precent">
+                  Percent: {model?.price3} %
+                </p>
+                <p>наценка: {accounting.formatNumber(dillNats, 0, " ")}</p>
+                <br />
+                <p>
+                  Avarage: <b>{accounting.formatNumber(dilAvg, 0, " ")}</b> so'm
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setIsUpdateOpen(true);
+                  setPrecent({
+                    ...precent,
+                    id: 3,
+                    precent: model?.price3,
+                    cost: showAvg,
+                    nats: dillNats,
+                    avg: dilAvg,
+                  });
+                }}
+              >
+                Edit price
+              </button>
+            </div>
+            <div className="aksiya_wrapper">
+              <div>
+                <h3>aksiya</h3>
+                <hr />
+                <br />
+                <p>
+                  Cost:
+                  <b>{accounting.formatNumber(dilAvg, 0, " ")}</b> So'm
+                </p>
+                <p id="4" className="precent">
+                  Percent: {model?.sale} %
+                </p>
+                <p>наценка: {accounting.formatNumber(aksNats, 0, " ")}</p>
+                <br />
+                <p>
+                  Avarage: <b>{accounting.formatNumber(aksAvg, 0, " ")}</b> so'm
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setIsUpdateOpen(true);
+                  setPrecent({
+                    ...precent,
+                    id: 4,
+                    precent: model?.sale,
+                    cost: dilAvg,
+                    nats: aksNats,
+                    avg: aksAvg,
+                  });
+                }}
+              >
+                Edit price
+              </button>
+            </div>
+          </div>
+
+          <h1 style={{ color: "white", textAlign: "center", padding: 25 }}>
+            Configuration
+          </h1>
+
+          <div className="edit-price-section">
+            {model?.configurations?.map((e, i) => {
+              return (
+                <div key={i + 1} className="conf-boxes">
+                  <div className="head-conf-box">
+                    <p>Name: {e.name}</p>
+                    <p>
+                      Cost: <b>{accounting.formatNumber(e.cost, 0, " ")}</b>{" "}
+                      so'm
+                    </p>
+                    <p>Count: {e.running_qty}</p>
+                  </div>
+                  <button id={e.id} onClick={(e) => OpenEditModal(e.target.id)}>
+                    Edit conf
+                  </button>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -398,16 +429,33 @@ export default function Typemodels() {
         <h1 className="add_modal_title">Edit</h1>
         <div className="input-groups">
           <div className="input-box">
+            <span>Cost:</span>
+            <b>{accounting.formatNumber(precent.cost, 0, " ")}</b>
+          </div>
+          <div className="input-box">
             <span className="input-label">Edit precent</span>
             <input
               onChange={(e) => {
-                setPrecent({ ...precent, precent: e.target.value });
+                let newNats = precent.cost * (e.target.value / 100);
+                let newAvg = newNats + precent.cost;
+                setPrecent({
+                  ...precent,
+                  precent: e.target.value,
+                  nats: newNats,
+                  avg: newAvg,
+                });
               }}
               defaultValue={precent.precent}
               required={true}
               type="text"
               placeholder="Edit precent"
             />
+          </div>
+          <div className="input-box">
+            наценка: <b>{accounting.formatNumber(precent.nats, 0, " ")}</b> so'm
+          </div>
+          <div className="input-box">
+            Avarage: <b>{accounting.formatNumber(precent.avg, 0, " ")}</b> so'm
           </div>
         </div>
         <button

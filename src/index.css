@@ -7,7 +7,7 @@
 
 :root {
   --app-bg: #101827;
-  --sidebar: rgba(21, 30, 47,1);
+  --sidebar: rgba(21, 30, 47, 1);
   --sidebar-main-color: #fff;
   --table-border: #1a2131;
   --table-header: #1a2131;
@@ -19,7 +19,8 @@
   --action-color-hover: #6291fd;
   --app-content-secondary-color: #1d283c;
   --filter-reset: #2c394f;
-  --filter-shadow: rgba(16, 24, 39, 0.8) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  --filter-shadow: rgba(16, 24, 39, 0.8) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 
 .light:root {
@@ -34,7 +35,8 @@
   --filter-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -49,16 +51,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-
 .edit-price-section {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
-
-
-.edit-price-section>div {
+.edit-price-section > div {
   width: 255px;
   height: 235px;
   border-radius: 9px;
@@ -70,14 +70,14 @@ body {
   background-color: white;
 }
 
-
 .edit-conf-section {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
-.edit-conf-section>div {
+.edit-conf-section > div {
   width: 235px;
   height: 215px;
   border-radius: 9px;
@@ -94,19 +94,17 @@ table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
-  border: 1px solid ;
+  border: 1px solid;
   border-radius: 3px;
   overflow: hidden;
-  color:rgb(32, 31, 31);
+  color: rgb(32, 31, 31);
   background-color: white;
-  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
-
-  
+  box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset,
+    rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
 }
 
-
-
-table td, th {
+table td,
+th {
   border: 1px solid #525353;
   text-align: left;
   padding: 8px;
@@ -148,11 +146,9 @@ tr:hover {
   border-radius: 3px;
 }
 
-
 .shelf {
-  padding: 25px 75px ;
+  padding: 25px 75px;
 }
-
 
 .conf-boxes {
   width: 255px;
@@ -166,7 +162,7 @@ tr:hover {
   background-color: white;
 }
 
-.conf-boxes> button {
+.conf-boxes > button {
   padding: 7px;
   font-size: 15px;
   cursor: pointer;
