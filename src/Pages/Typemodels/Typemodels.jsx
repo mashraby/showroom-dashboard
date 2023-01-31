@@ -13,7 +13,13 @@ export default function Typemodels() {
     useContext(OpenModal);
 
   const [modalData, setModalData] = useState({});
-  const [precent, setPrecent] = useState(null);
+  const [precents, setPrecents] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const [precent, setPrecent] = useState({
+    id: null,
+    precent: null,
+  });
   const [confs, setConfs] = useState({});
   const [updateLoad, setUpdateLoad] = useState(false);
   const [updateData, setUpdateData] = useState({
@@ -22,62 +28,9 @@ export default function Typemodels() {
     cost: null,
     running_qty: null,
   });
-
-  // let allBtns = document.querySelectorAll(".aksiya_wrapper button");
-  // let allPrecents = document.querySelectorAll(".precent");
-
-  // useEffect(() => {
-  //   allBtns.forEach((e) => {
-  //     e.addEventListener("click", (evt) => {
-  //       allPrecents.forEach((e) => {
-  //         if (e.id === evt.target.id) {
-  //           setPrecent(e.textContent.split(" ").filter((e) => e == isNaN(e)));
-  //         }
-  //       });
-  //     });
-  //   });
-  // }, []);
-
-  // comment
-
-  const ModelCost = (confs) => {
-    let modelCost = 0;
-
-    confs?.map((e) => {
-      return (modelCost = modelCost + e.cost * e.running_qty);
-    });
-
-    return modelCost;
-  };
-
   const [model, setModel] = useState();
 
-  const filterObj = (obj) => {
-    setUpdateLoad(true);
-
-    Object.keys(obj).forEach((key) => {
-      if (obj[key] === null) {
-        delete obj[key];
-      }
-
-      return obj;
-    });
-
-    console.log(obj.id, model?.configurations.find((e) => e.id === obj.id).id);
-
-    axios
-      .put("/config", obj)
-      .then((res) => {
-        setUpdateLoad(true);
-        setConfs(res);
-      })
-      .finally(() => {
-        setUpdateLoad(false);
-        setIsOpen(false);
-        axios.get(`/model/${id}`).then((res) => setModel(res.data));
-      })
-      .catch((err) => console.error(err));
-  };
+  // comment
 
   useEffect(() => {
     axios
@@ -95,6 +48,43 @@ export default function Typemodels() {
       .catch((err) => console.log(err));
   }, []);
 
+  let sumMoney = model?.configurations.reduce(
+    (a, b) => a.cost * a.running_qty + b.cost * b.running_qty
+  );
+  let factNats = sumMoney * (model?.price1 / 100);
+  let factAvg = sumMoney + factNats;
+  let showNats = factAvg * (model?.price2 / 100);
+  let showAvg = factAvg + showNats;
+  let dillNats = showAvg * (model?.price3 / 100);
+  let dilAvg = showAvg + dillNats;
+  let aksNats = dilAvg * (model?.sale / 100);
+  let aksAvg = dilAvg + aksNats;
+
+  const filterObj = (obj) => {
+    setUpdateLoad(true);
+
+    Object.keys(obj).forEach((key) => {
+      if (obj[key] === null) {
+        delete obj[key];
+      }
+
+      return obj;
+    });
+
+    axios
+      .put("/config", obj)
+      .then((res) => {
+        setUpdateLoad(true);
+        setConfs(res);
+      })
+      .finally(() => {
+        setUpdateLoad(false);
+        setIsOpen(false);
+        axios.get(`/model/${id}`).then((res) => setModel(res.data));
+      })
+      .catch((err) => console.error(err));
+  };
+
   const OpenEditModal = (id) => {
     setIsOpen(!isOpen);
     setUpdateData({ ...updateData, id: id });
@@ -102,10 +92,96 @@ export default function Typemodels() {
     setModalData(findConfigure);
   };
 
-  const openPrecentEditModal = (precent) => {
-    setIsUpdateOpen(true);
-    setPrecent(precent)
+  useEffect(() => {
+    console.log(precent);
+  }, [precent]);
+
+  const changePrecent = (btnId) => {
+    let changeId = Number(btnId);
+    if (changeId === 1) {
+      setLoading(true);
+      console.log(id);
+      console.log(model);
+      axios
+        .put(`/model`, {
+          model_id: id,
+          price1: precent.precent,
+        })
+        .then((res) => console.log(res))
+        .finally(() => {
+          setIsUpdateOpen(false);
+          setLoading(false);
+          axios
+            .get(`/model/${id}`)
+            .then((res) => {
+              setModel(res.data);
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
+    } else if (changeId === 2) {
+      setLoading(true);
+      console.log(id);
+      axios
+        .put(`/model`, {
+          model_id: id,
+          price2: precent.precent,
+        })
+        .then((res) => console.log(res))
+        .finally(() => {
+          setIsUpdateOpen(false);
+          setLoading(false);
+          axios
+            .get(`/model/${id}`)
+            .then((res) => {
+              setModel(res.data);
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
+    } else if (changeId === 3) {
+      setLoading(true);
+      console.log(id);
+      axios
+        .put(`/model`, {
+          model_id: id,
+          price3: precent.precent,
+        })
+        .then((res) => console.log(res))
+        .finally(() => {
+          setIsUpdateOpen(false);
+          setLoading(false);
+          axios
+            .get(`/model/${id}`)
+            .then((res) => {
+              setModel(res.data);
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
+    } else if (changeId === 4) {
+      setLoading(true);
+      console.log(id);
+      axios
+        .put(`/model`, {
+          model_id: id,
+          sale: precent.precent,
+        })
+        .then((res) => console.log(res))
+        .finally(() => {
+          setIsUpdateOpen(false);
+          setLoading(false);
+          axios
+            .get(`/model/${id}`)
+            .then((res) => {
+              setModel(res.data);
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
+    }
   };
+
 
   return (
     <div className="app-container">
@@ -123,28 +199,23 @@ export default function Typemodels() {
               <br />
               <p>
                 Cost:
-                <b>
-                  {accounting.formatNumber(
-                    ModelCost(
-                      model?.configurations ? model.configurations : []
-                    ),
-                    0,
-                    " "
-                  )}
-                </b>{" "}
-                So'm
+                <b>{accounting.formatNumber(sumMoney, 0, " ")}</b> So'm
               </p>
               <p id="1" className="precent">
                 Percent: {model?.price1} %
               </p>
-              <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
+              <p>наценка: {accounting.formatNumber(factNats, 0, " ")} So'm</p>
               <br />
               <p>
-                Avarage: <b>{accounting.formatNumber(452147000, 0, " ")}</b>{" "}
-                so'm
+                Avarage: <b>{accounting.formatNumber(factAvg, 0, " ")}</b> so'm
               </p>
             </div>
-            <button onClick={() => openPrecentEditModal(model?.price1)}>
+            <button
+              onClick={() => {
+                setIsUpdateOpen(true);
+                setPrecent({ id: 1, precent: model?.price1 });
+              }}
+            >
               Edit price
             </button>
           </div>
@@ -155,28 +226,23 @@ export default function Typemodels() {
               <br />
               <p>
                 Cost:
-                <b>
-                  {accounting.formatNumber(
-                    ModelCost(
-                      model?.configurations ? model.configurations : []
-                    ),
-                    0,
-                    " "
-                  )}
-                </b>{" "}
-                So'm
+                <b>{accounting.formatNumber(factAvg, 0, " ")}</b> So'm
               </p>
               <p id="2" className="precent">
-                Percent: {model?.price1} %
+                Percent: {model?.price2} %
               </p>
-              <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
+              <p>наценка: {accounting.formatNumber(showNats, 0, " ")}</p>
               <br />
               <p>
-                Avarage: <b>{accounting.formatNumber(452147000, 0, " ")}</b>{" "}
-                so'm
+                Avarage: <b>{accounting.formatNumber(showAvg, 0, " ")}</b> so'm
               </p>
             </div>
-            <button onClick={() => openPrecentEditModal(model?.price2)}>
+            <button
+              onClick={() => {
+                setIsUpdateOpen(true);
+                setPrecent({ id: 2, precent: model?.price2 });
+              }}
+            >
               Edit price
             </button>
           </div>
@@ -187,28 +253,23 @@ export default function Typemodels() {
               <br />
               <p>
                 Cost:
-                <b>
-                  {accounting.formatNumber(
-                    ModelCost(
-                      model?.configurations ? model.configurations : []
-                    ),
-                    0,
-                    " "
-                  )}
-                </b>{" "}
-                So'm
+                <b>{accounting.formatNumber(showAvg, 0, " ")}</b> So'm
               </p>
               <p id="3" className="precent">
-                Percent: {model?.price1} %
+                Percent: {model?.price3} %
               </p>
-              <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
+              <p>наценка: {accounting.formatNumber(dillNats, 0, " ")}</p>
               <br />
               <p>
-                Avarage: <b>{accounting.formatNumber(452147000, 0, " ")}</b>{" "}
-                so'm
+                Avarage: <b>{accounting.formatNumber(dilAvg, 0, " ")}</b> so'm
               </p>
             </div>
-            <button onClick={() => openPrecentEditModal(model?.price3)}>
+            <button
+              onClick={() => {
+                setIsUpdateOpen(true);
+                setPrecent({ id: 3, precent: model?.price3 });
+              }}
+            >
               Edit price
             </button>
           </div>
@@ -219,28 +280,23 @@ export default function Typemodels() {
               <br />
               <p>
                 Cost:
-                <b>
-                  {accounting.formatNumber(
-                    ModelCost(
-                      model?.configurations ? model.configurations : []
-                    ),
-                    0,
-                    " "
-                  )}
-                </b>{" "}
-                So'm
+                <b>{accounting.formatNumber(dilAvg, 0, " ")}</b> So'm
               </p>
               <p id="4" className="precent">
-                Percent: {model?.price1} %
+                Percent: {model?.sale} %
               </p>
-              <p>наценка: {accounting.formatNumber(54200, 0, " ")}</p>
+              <p>наценка: {accounting.formatNumber(aksNats, 0, " ")}</p>
               <br />
               <p>
-                Avarage: <b>{accounting.formatNumber(452147000, 0, " ")}</b>{" "}
-                so'm
+                Avarage: <b>{accounting.formatNumber(aksAvg, 0, " ")}</b> so'm
               </p>
             </div>
-            <button onClick={() => openPrecentEditModal(0)}>
+            <button
+              onClick={() => {
+                setIsUpdateOpen(true);
+                setPrecent({ id: 4, precent: model?.sale });
+              }}
+            >
               Edit price
             </button>
           </div>
@@ -278,7 +334,6 @@ export default function Typemodels() {
       <form
         style={isOpen ? { top: "50%" } : { top: "-100%" }}
         className="add_modal_form"
-        action=""
       >
         <h1 className="add_modal_title">Edit {modalData?.name}</h1>
         <div className="input-groups">
@@ -320,7 +375,10 @@ export default function Typemodels() {
           </div>
         </div>
         <button
-          onClick={() => filterObj(updateData)}
+          onClick={() => {
+            filterObj(updateData);
+            console.log(modalData);
+          }}
           type="button"
           className="add_modal_submit_btn"
         >
@@ -342,15 +400,23 @@ export default function Typemodels() {
           <div className="input-box">
             <span className="input-label">Edit precent</span>
             <input
-              defaultValue={precent}
+              onChange={(e) => {
+                setPrecent({ ...precent, precent: e.target.value });
+              }}
+              defaultValue={precent.precent}
               required={true}
               type="text"
               placeholder="Edit precent"
             />
           </div>
         </div>
-        <button type="button" className="add_modal_submit_btn">
-          Edit precent
+        <button
+          id={precent.id}
+          onClick={(e) => changePrecent(e.target.id)}
+          type="button"
+          className="add_modal_submit_btn"
+        >
+          {loading ? "loading..." : "Edit precent"}
         </button>
       </form>
     </div>
