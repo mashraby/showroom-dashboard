@@ -3,7 +3,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
@@ -12,25 +12,31 @@ import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 const TissueConf = () => {
   const { isOpen, setIsOpen } = useContext(OpenModal);
   const [sendTissueConfLoad, setTissueConfLoad] = useState(false);
-  const { tissueId } = useParams();
+  const { tissueId, id } = useParams();
+  const [tissueConfs, setTissueConfs] = useState([]);
   const [tissueConfData, setTissueConfData] = useState({
     name: "",
     color: "",
     hex_color: "",
     tissue: tissueId,
   });
-  const { id } = useParams();
+
   const [tissue, setTissue] = useState();
 
   useEffect(() => {
     axios
-      .get(`tissue/${id}`)
-      .then((data) => {
-        setTissue(data.data);
+      .get(`tissue/${tissueId}`)
+      .then((res) => {
+        setTissue(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
+
+    axios
+      .get("/tissue-conf")
+      .then((res) => setTissueConfs(res.data))
+      .catch((err) => console.log(err));
   }, []);
 
   const data = {
@@ -43,6 +49,7 @@ const TissueConf = () => {
   const sendTissueConf = (e) => {
     e.preventDefault();
     setTissueConfLoad(true);
+    console.log(tissueConfData.hex_color, "buum");
     axios
       .post("/tissue-conf", {
         name: tissueConfData.name,
@@ -54,8 +61,11 @@ const TissueConf = () => {
       .finally(() => {
         setTissueConfLoad(false);
         setIsOpen(false);
+        axios.get("/tissue-conf").then((res) => setTissueConfs(res.data));
       });
   };
+
+  console.log(tissueConfs);
 
   return (
     <div className="app-container">
@@ -63,54 +73,33 @@ const TissueConf = () => {
       <div className="app-content">
         <Header headerInfos={data} />
         <Actions />
-        <h3 style={{ color: "white" }}>{tissue?.name}</h3>
-        <div className="edit-price-section">
-          {/* {model?.configurations?.map((e, i) => { */}
-          {/* return ( */}
-          <div className="conf-boxes">
-            <div className="head-conf-box">
-              <p>Name: name</p>
-              <p>
-                Cost: <b>0</b> so'm
-              </p>
-              <p>Count: 0</p>
-            </div>
-            <button>Edit conf</button>
+        <Link style={{ color: "white" }} to="/tissues">
+          <h3>{"< Back To Tissues"}</h3>
+        </Link>
+
+        <div>
+          <h1 style={{ textAlign: "center", color: "white" }}>
+            Tissue: {tissue?.name}
+          </h1>
+
+          <div className="edit-price-section">
+            {tissueConfs &&
+              tissueConfs.map((e, i) => {
+                return (
+                  <div key={i + 1} className="conf-boxes">
+                    <div className="head-conf-box">
+                      <p>Name: {e.name}</p>
+                      <p>
+                        Color: <b>{e.color}</b>
+                      </p>
+                      <p>Hex Color: {e.hex_color}</p>
+                    </div>
+                    <button>Edit conf</button>
+                  </div>
+                );
+              })}
           </div>
-          <div className="conf-boxes">
-            <div className="head-conf-box">
-              <p>Name: name</p>
-              <p>
-                Cost: <b>0</b> so'm
-              </p>
-              <p>Count: 0</p>
-            </div>
-            <button>Edit conf</button>
-          </div>
-          <div className="conf-boxes">
-            <div className="head-conf-box">
-              <p>Name: name</p>
-              <p>
-                Cost: <b>0</b> so'm
-              </p>
-              <p>Count: 0</p>
-            </div>
-            <button>Edit conf</button>
-          </div>
-          <div className="conf-boxes">
-            <div className="head-conf-box">
-              <p>Name: name</p>
-              <p>
-                Cost: <b>0</b> so'm
-              </p>
-              <p>Count: 0</p>
-            </div>
-            <button>Edit conf</button>
-          </div>
-          {/* ); */}
-          {/* })} */}
         </div>
-        
       </div>
 
       <div
@@ -152,13 +141,14 @@ const TissueConf = () => {
             <span className="input-label">Enter a config hex color</span>
             <input
               required={true}
-              type="text"
-              onChange={(e) =>
+              type="color"
+              onChange={(e) => {
                 setTissueConfData({
                   ...tissueConfData,
                   hex_color: e.target.value,
-                })
-              }
+                });
+                console.log(e.target.value);
+              }}
               placeholder="config hex color"
             />
           </div>
