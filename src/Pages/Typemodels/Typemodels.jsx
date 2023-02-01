@@ -5,6 +5,8 @@ import Navbar from "../../Components/Navbar/Navbar";
 import accounting from "accounting";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import "./Typemodel.css";
+import Header from "../../Components/Header/Header";
+import Actions from "../../Components/Actions/Actions";
 
 export default function Typemodels() {
   const { id, tissueId } = useParams();
@@ -179,14 +181,32 @@ export default function Typemodels() {
     }
   };
 
+  let bg = document.querySelector(".big-wrapper");
+
+  bg?.addEventListener("scroll", (e) => {
+    console.log();
+    if (
+      document.querySelector(".products-header").getBoundingClientRect().y < 230
+    ) {
+      document.querySelector(".products-header").style.position = "sticky";
+      document.querySelector(".products-header").style.top = "0px";
+    } else {
+      document.querySelector(".products-header").style.position = "";
+      document.querySelector(".products-header").style.top = "";
+    }
+  });
+
   return (
     <div className="app-container">
       <Navbar />
       <div className="app-content">
-        <Link style={{color: "white"}} to="/models">
+        {/* <Header headerInfos={data} /> */}
+        <Actions />
+        <Link style={{ color: "white", width: "170px" }} to="/models">
           <h3>{"< Back to models"}</h3>
         </Link>
-        <div className="products-area-wrapper">
+
+        <div className="big-wrapper">
           <h2 style={{ color: "white", textAlign: "center", padding: 25 }}>
             Model: {model?.name}
           </h2>
@@ -331,28 +351,144 @@ export default function Typemodels() {
             </div>
           </div>
 
-          <h1 style={{ color: "white", textAlign: "center", padding: 25 }}>
+          <h1
+            className="heading__conf"
+            style={{ color: "white", textAlign: "center", padding: 25 }}
+          >
             Configuration
           </h1>
 
-          <div className="edit-price-section">
-            {model?.configurations?.map((e, i) => {
-              return (
-                <div key={i + 1} className="conf-boxes">
-                  <div className="head-conf-box">
-                    <p>Name: {e.name}</p>
-                    <p>
-                      Cost: <b>{accounting.formatNumber(e.cost, 0, " ")}</b>{" "}
-                      so'm
-                    </p>
-                    <p>Count: {e.running_qty}</p>
+          <div className="products-area-wrapper tableView">
+            <div className="products-header">
+              <div className="product-cell image">
+                Configuration ID
+                <button className="sort-button">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="product-cell category">
+                Configuration Name
+                <button className="sort-button">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="product-cell category">
+                Configuration Cost
+                <button className="sort-button">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="product-cell category">
+                Configuration Count
+                <button className="sort-button">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="product-cell category">
+                Edit Configuration
+                <button className="sort-button">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            {model?.configurations &&
+              model.configurations.map((item, index) => {
+                return (
+                  <div key={index + 1} className="products-row">
+                    <button className="cell-more-button">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="feather feather-more-vertical"
+                      >
+                        <circle cx="12" cy="12" r="1" />
+                        <circle cx="12" cy="5" r="1" />
+                        <circle cx="12" cy="19" r="1" />
+                      </svg>
+                    </button>
+                    <div className="product-cell image">
+                      <img
+                        src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+                        alt="product"
+                      />
+                      <span>{index + 1}</span>
+                    </div>
+                    <div className="product-cell category">
+                      <span className="cell-label">Config Name:</span>
+                      {item.name}
+                    </div>
+                    <div className="product-cell category">
+                      <span className="cell-label">Config Cost:</span>
+                      {item.cost}
+                    </div>
+                    <div className="product-cell category">
+                      <span className="cell-label">Config Count:</span>
+                      {item.running_qty}
+                    </div>
+                    <div className="product-cell category">
+                      <span className="cell-label">Edit Config:</span>
+                      <button id={item.id}>Edit</button>
+                    </div>
                   </div>
-                  <button id={e.id} onClick={(e) => OpenEditModal(e.target.id)}>
-                    Edit conf
-                  </button>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </div>
       </div>

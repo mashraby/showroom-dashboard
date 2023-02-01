@@ -317,3 +317,7 @@ a {
   text-decoration: none;
 }
 
+.big-wrapper {
+  height: 90vh;
+  overflow: auto;
+}
