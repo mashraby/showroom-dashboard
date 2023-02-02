@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
@@ -21,8 +22,13 @@ export default function Furnute_types() {
         name: typeName,
       })
       .then((res) => {
-        if (res && res.status === 200) {
-          setIsOpen(!isOpen);
+        if (res.status === 200) {
+          toast.success("Added new furniture type")
+        }
+      })
+      .catch(err => {
+        if(err) {
+          toast.error("Furniture type qo'shilmadi qayta urinib ko'ring")
         }
       })
       .finally(() => {

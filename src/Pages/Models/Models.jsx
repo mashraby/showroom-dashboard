@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
@@ -31,7 +32,16 @@ export default function Models() {
         name: modelName,
         type: selectType
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        if(res.status === 200) {
+          toast.success("Added new model")
+        }
+      })
+      .catch(err => {
+        if(err) {
+          toast.error("Model qo'shilmadi qayta urinib ko'ring")
+        }
+      })
       .finally(() => {
         setSendModelLoad(false)
         setIsOpen(false)

@@ -1,29 +1,22 @@
 import axios from "axios";
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
-import Spinner from "../../Components/Spinner/Spinner";
-import Toast from "../../Components/Toast/Toast";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 
 export default function Companys() {
   const {
     isOpen,
     setIsOpen,
-    isToastOpen,
-    setIsToastOpen,
-    isSpinner,
-    setIsSpinner,
   } = useContext(OpenModal);
 
   const [companys, setCompanys] = useState([]);
   const [companyName, setCompanyName] = useState("");
   const [companyStatus, setCompanyStatus] = useState("");
   const [sendCompLoad, setSendCompLoad] = useState(false);
-  const [resStatus, setResStatus] = useState(null);
-  const [resMessage, setResMessage] = useState("");
   const access_token = localStorage.getItem("token");
 
   const data = {
@@ -36,7 +29,6 @@ export default function Companys() {
   const sendCompany = (e) => {
     e.preventDefault();
     setSendCompLoad(true);
-    setIsSpinner(true);
 
     axios
       .post("/company", {
@@ -47,8 +39,16 @@ export default function Companys() {
         name: companyName,
         status: companyStatus,
       })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err))
+      .then((res) => {
+        if(res.status===200) {
+          toast.success("Added new company")
+        }
+      })
+      .catch((err) => {
+        if(err) {
+          toast.error("Company qo'shilmadi qayta urinib ko'ring")
+        }
+      })
       .finally(() => {
         setSendCompLoad(false);
         setIsOpen(false)
@@ -214,12 +214,9 @@ export default function Companys() {
           </div>
         </div>
         <button className="add_modal_submit_btn">
-          Add Company
-          <Spinner />
+          { sendCompLoad ? "loading..." : "Add Company" }
         </button>
       </form>
-
-      {/* <Toast res={{ status: resStatus, message: resMessage }} /> */}
     </div>
   );
 }

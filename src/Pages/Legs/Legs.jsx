@@ -4,6 +4,7 @@ import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
+import { toast } from "react-toastify";
 
 export default function Legs() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
@@ -25,8 +26,6 @@ export default function Legs() {
       .catch((err) => console.error(err));
   }, []);
 
-  console.log(legs);
-
   const sendLeg = (e) => {
     e.preventDefault();
     setSendLegLoad(true);
@@ -35,14 +34,22 @@ export default function Legs() {
       .post("/leg", {
         name: legName,
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        if(res.status===200) {
+          toast.success("Added new leg")
+        }
+      })
       .finally(() => {
         setIsOpen(false);
         setSendLegLoad(false);
         axios.get("/legs")
           .then(res => setlegs(res.data))
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        if(err) {
+          toast.error("Leg qo'shilmadi qayta urinib ko'ring")
+        }
+      })
   };
 
   return (

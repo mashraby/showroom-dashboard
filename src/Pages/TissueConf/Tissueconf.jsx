@@ -49,7 +49,6 @@ const TissueConf = () => {
   const sendTissueConf = (e) => {
     e.preventDefault();
     setTissueConfLoad(true);
-    console.log(tissueConfData.hex_color, "buum");
     axios
       .post("/tissue-conf", {
         name: tissueConfData.name,
@@ -64,8 +63,6 @@ const TissueConf = () => {
         axios.get("/tissue-conf").then((res) => setTissueConfs(res.data));
       });
   };
-
-  console.log(tissueConfs);
 
   return (
     <div className="app-container">

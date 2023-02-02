@@ -52,3 +52,7 @@
 .input-box {
   display: flex;
 }
+
+.aksiya_wrapper {
+  border: 1px solid black;
+}

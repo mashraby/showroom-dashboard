@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
@@ -40,7 +41,16 @@ export default function Configurations() {
         title,
         running_qty,
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        if(res.status===200) {
+          toast.success("Added new config")
+        }
+      })
+      .catch(err => {
+        if(err) {
+          toast.error("Config qo'shilmadi qayta urinib ko'ring")
+        }
+      })
       .finally(() => {
         setIsOpen(false);
         setSendConfigurationLoad(false);
@@ -55,7 +65,6 @@ export default function Configurations() {
     axios
       .get(`/typemodels/${selectType}`)
       .then((res) => {
-        console.log(res);
         setModels(res.data);
       })
       .catch((err) => console.log(err));
@@ -65,7 +74,6 @@ export default function Configurations() {
     axios
       .get("/types")
       .then((res) => {
-        console.log(res);
         setTypes(res.data);
       })
       .catch((err) => console.log(err));
@@ -73,7 +81,6 @@ export default function Configurations() {
     axios
       .get("/configurations")
       .then((res) => {
-        console.log(res);
         setConfigurations(res.data);
       })
       .catch((err) => console.log(err));

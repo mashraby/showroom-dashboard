@@ -7,7 +7,8 @@ import admin from "../../Assets/img/admin.jpg";
 import { useContext } from "react";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import axios from "axios";
-import Toast from "../../Components/Toast/Toast";
+// import Toast from "../../Components/Toast/Toast";
+import { toast } from "react-toastify";
 
 export default function Roles() {
   const { isOpen, setIsOpen, setIsToastOpen } = useContext(OpenModal);
@@ -34,13 +35,21 @@ export default function Roles() {
       .post("/role", {
         role_name: roleName,
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        if(res.status === 200) {
+          toast.success("Added new role")
+        }
+      })
       .finally(() => {
         setLoading(false);
         setIsOpen(false);
         axios.get("/roles").then((res) => setRoles(res.data));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if(err) {
+          toast.error("role qo'shilmadi qayta urinib ko'ring")
+        }
+      });
   };
 
   useEffect(() => {

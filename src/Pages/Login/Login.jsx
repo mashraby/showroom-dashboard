@@ -54,7 +54,6 @@ const Login = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
         if (err.message === "Network request failed") {
           console.log("Network ");
         } else {
