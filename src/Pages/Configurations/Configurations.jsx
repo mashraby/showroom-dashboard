@@ -1,6 +1,5 @@
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import React, { useContext, useEffect } from "react";
-import { useState } from "react";
 import { toast } from "react-toastify";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
@@ -120,10 +119,6 @@ export default function Configurations() {
                     </svg>
                   </button>
                   <div className="product-cell image">
-                    <img
-                      src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
-                      alt="product"
-                    />
                     <span>{index + 1}</span>
                   </div>
                   <div className="product-cell category">

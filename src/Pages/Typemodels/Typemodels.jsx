@@ -14,6 +14,7 @@ export default function Typemodels() {
   const { isOpen, setIsOpen, isUpdateOpen, setIsUpdateOpen } =
     useContext(OpenModal);
 
+  const [model, setModel] = useState();
   const [modalData, setModalData] = useState({});
   const [loading, setLoading] = useState(false);
   const [precent, setPrecent] = useState({
@@ -23,7 +24,6 @@ export default function Typemodels() {
     nats: null,
     avg: null,
   });
-  const [confs, setConfs] = useState({});
   const [updateLoad, setUpdateLoad] = useState(false);
   const [updateData, setUpdateData] = useState({
     id: "",
@@ -31,9 +31,6 @@ export default function Typemodels() {
     cost: null,
     running_qty: null,
   });
-  const [model, setModel] = useState();
-
-  // comment
 
   useEffect(() => {
     axios
@@ -41,7 +38,7 @@ export default function Typemodels() {
       .then((res) => {
         setModel(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err));  
 
     axios
       .get(`/confs/${tissueId}`)
@@ -53,8 +50,7 @@ export default function Typemodels() {
     return Number(e.cost) * e.running_qty;
   });
 
-  let sumMoney = arr1?.reduce((a, b) => a + b);
-
+  let sumMoney = arr1 && arr1?.length !== 0 && arr1?.reduce((a, b) => a + b)  
   let factNats = sumMoney * (model?.price1 / 100);
   let factAvg = sumMoney + factNats;
   let showNats = factAvg * (model?.price2 / 100);
@@ -79,7 +75,6 @@ export default function Typemodels() {
       .put("/config", obj)
       .then((res) => {
         setUpdateLoad(true);
-        setConfs(res);
       })
       .finally(() => {
         setUpdateLoad(false);
@@ -211,7 +206,7 @@ export default function Typemodels() {
 
   let bg = document.querySelector(".big-wrapper");
 
-  bg?.addEventListener("scroll", (e) => {
+  bg?.addEventListener("scroll", () => {
     if (
       document.querySelector(".products-header").getBoundingClientRect().y < 230
     ) {
@@ -387,86 +382,11 @@ export default function Typemodels() {
 
           <div className="products-area-wrapper tableView">
             <div className="products-header">
-              <div className="product-cell image">
-                Configuration ID
-                <button className="sort-button">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 512 512"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div className="product-cell category">
-                Configuration Name
-                <button className="sort-button">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 512 512"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div className="product-cell category">
-                Configuration Cost
-                <button className="sort-button">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 512 512"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div className="product-cell category">
-                Configuration Count
-                <button className="sort-button">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 512 512"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div className="product-cell category">
-                Edit Configuration
-                <button className="sort-button">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 512 512"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                    />
-                  </svg>
-                </button>
-              </div>
+              <div className="product-cell image">Configuration ID</div>
+              <div className="product-cell category">Configuration Name</div>
+              <div className="product-cell category">Configuration Cost</div>
+              <div className="product-cell category">Configuration Count</div>
+              <div className="product-cell category">Edit Configuration</div>
             </div>
             {model?.configurations &&
               model.configurations.map((item, index) => {
