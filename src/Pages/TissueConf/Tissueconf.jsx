@@ -1,9 +1,6 @@
-import accounting from "accounting";
-import axios from "axios";
-import { useContext } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 import { toast } from "react-toastify";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
@@ -12,9 +9,10 @@ import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 
 const TissueConf = () => {
   const { isOpen, setIsOpen } = useContext(OpenModal);
-  const [sendTissueConfLoad, setTissueConfLoad] = useState(false);
-  const { tissueId, id } = useParams();
   const [tissueConfs, setTissueConfs] = useState([]);
+  const { tissueId } = useParams();
+  const [sendTissueConfLoad, setTissueConfLoad] = useState(false);
+  const [tissue, setTissue] = useState();
   const [tissueConfData, setTissueConfData] = useState({
     name: "",
     color: "",
@@ -22,7 +20,8 @@ const TissueConf = () => {
     tissue: tissueId,
   });
 
-  const [tissue, setTissue] = useState();
+  console.log(tissue);
+
 
   useEffect(() => {
     axios
