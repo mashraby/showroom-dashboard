@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
@@ -56,7 +57,16 @@ const TissueConf = () => {
         hex_color: tissueConfData.hex_color,
         tissue: tissueConfData.tissue,
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Added new tissue config");
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          toast.error("Tissue conf qoshilmadi qayta urinib koring");
+        }
+      })
       .finally(() => {
         setTissueConfLoad(false);
         setIsOpen(false);

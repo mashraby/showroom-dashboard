@@ -9,16 +9,13 @@ import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import axios from "axios";
 // import Toast from "../../Components/Toast/Toast";
 import { toast } from "react-toastify";
+import Spinner from "../../Components/Spinner/Spinner";
 
 export default function Roles() {
   const { isOpen, setIsOpen, setIsToastOpen } = useContext(OpenModal);
   const [roles, setRoles] = useState([]);
   const [roleName, setRoleName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [toastingData, setToastingData] = useState({
-    status: null,
-    message: "",
-  });
 
   const data = {
     headerInfos: {
@@ -36,8 +33,8 @@ export default function Roles() {
         role_name: roleName,
       })
       .then((res) => {
-        if(res.status === 200) {
-          toast.success("Added new role")
+        if (res.status === 200) {
+          toast.success("Added new role");
         }
       })
       .finally(() => {
@@ -46,8 +43,8 @@ export default function Roles() {
         axios.get("/roles").then((res) => setRoles(res.data));
       })
       .catch((err) => {
-        if(err) {
-          toast.error("role qo'shilmadi qayta urinib ko'ring")
+        if (err) {
+          toast.error("role qo'shilmadi qayta urinib ko'ring");
         }
       });
   };
@@ -163,10 +160,10 @@ export default function Roles() {
           </div>
         </div>
         <button className="add_modal_submit_btn">
-          {loading ? "loading..." : "Add Role"}
+          
+          { loading ? `Add Role ${<Spinner loading={loading}/>}` : "Add Role" }
         </button>
       </form>
-      {/* <Toast data={toastingData} /> */}
     </div>
   );
 }

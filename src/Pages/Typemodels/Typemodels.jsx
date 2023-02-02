@@ -106,8 +106,8 @@ export default function Typemodels() {
           price1: precent.precent,
         })
         .then((res) => {
-          if(res.status===200) {
-            toast.success("Foiz muvaffaqiyatli o'zgartirildi")
+          if (res.status === 200) {
+            toast.success("Foiz muvaffaqiyatli o'zgartirildi");
           }
         })
         .finally(() => {
@@ -121,8 +121,8 @@ export default function Typemodels() {
             .catch((err) => console.log(err));
         })
         .catch((err) => {
-          if(err) {
-            toast.error("Foiz o'zgarmadi qayta urinib ko'ring")
+          if (err) {
+            toast.error("Foiz o'zgarmadi qayta urinib ko'ring");
           }
         });
     } else if (changeId === 2) {
@@ -132,7 +132,11 @@ export default function Typemodels() {
           model_id: id,
           price2: precent.precent,
         })
-        .then((res) => console.log(res))
+        .then((res) => {
+          if (res.status === 200) {
+            toast.success("Foiz muvaffaqiyatli o'zgartirildi");
+          }
+        })
         .finally(() => {
           setIsUpdateOpen(false);
           setLoading(false);
@@ -143,7 +147,11 @@ export default function Typemodels() {
             })
             .catch((err) => console.log(err));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err) {
+            toast.error("Foiz o'zgarmadi qayta urinib ko'ring");
+          }
+        });
     } else if (changeId === 3) {
       setLoading(true);
       axios
@@ -151,7 +159,11 @@ export default function Typemodels() {
           model_id: id,
           price3: precent.precent,
         })
-        .then((res) => console.log(res))
+        .then((res) => {
+          if (res.status === 200) {
+            toast.success("Foiz muvaffaqiyatli o'zgartirildi");
+          }
+        })
         .finally(() => {
           setIsUpdateOpen(false);
           setLoading(false);
@@ -162,7 +174,11 @@ export default function Typemodels() {
             })
             .catch((err) => console.log(err));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err) {
+            toast.error("Foiz o'zgarmadi qayta urinib ko'ring");
+          }
+        });
     } else if (changeId === 4) {
       setLoading(true);
       axios
@@ -170,7 +186,11 @@ export default function Typemodels() {
           model_id: id,
           sale: precent.precent,
         })
-        .then((res) => console.log(res))
+        .then((res) => {
+          if (res.status === 200) {
+            toast.success("Foiz muvaffaqiyatli o'zgartirildi");
+          }
+        })
         .finally(() => {
           setIsUpdateOpen(false);
           setLoading(false);
@@ -181,7 +201,11 @@ export default function Typemodels() {
             })
             .catch((err) => console.log(err));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err) {
+            toast.error("Foiz o'zgarmadi qayta urinib ko'ring");
+          }
+        });
     }
   };
 

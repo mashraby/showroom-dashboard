@@ -1,17 +1,21 @@
-import React from "react";
-import { useContext } from "react";
-import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
-import "./Spinner.css";
+// import {CSSProperties} from 'react'
+// import { ClipLoader } from 'react-spinners';
 
-export default function Spinner() {
-  const { isSpinner } = useContext(OpenModal);
+// const override: CSSProperties = {
+//   display: "block",
+//   margin: "0 auto",
+//   borderColor: "white",
+// };
 
-  return (
-    <div style={{ display: isSpinner ? "block" : "none" }} className="lds-ring">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  );
-}
+// export default function Spinner({ loading }) {
+//   console.log(loading);
+//   return (
+//     <ClipLoader
+//         loading={loading}
+//         cssOverride={override}
+//         size={150}
+//         aria-label="Loading Spinner"
+//         data-testid="loader"
+//       />
+//   )
+// }
