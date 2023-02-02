@@ -15,11 +15,14 @@ import Typemodels from "./Pages/Typemodels/Typemodels";
 import Configurations from "./Pages/Configurations/Configurations";
 import Legs from "./Pages/Legs/Legs";
 import TissueConf from "./Pages/TissueConf/Tissueconf";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <GetFetchProvider>
       <div className="app-container">
+        <ToastContainer autoClose={3000} />
         <Routes>
           <Route path="/" element={<Private />}>
             <Route path="/" element={<Roles />} />

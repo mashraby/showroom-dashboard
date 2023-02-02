@@ -5,8 +5,8 @@ import Navbar from "../../Components/Navbar/Navbar";
 import accounting from "accounting";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import "./Typemodel.css";
-import Header from "../../Components/Header/Header";
 import Actions from "../../Components/Actions/Actions";
+import { toast } from "react-toastify";
 
 export default function Typemodels() {
   const { id, tissueId } = useParams();
@@ -39,8 +39,6 @@ export default function Typemodels() {
     axios
       .get(`/model/${id}`)
       .then((res) => {
-        console.log(res.data);
-
         setModel(res.data);
       })
       .catch((err) => console.log(err));
@@ -51,9 +49,12 @@ export default function Typemodels() {
       .catch((err) => console.log(err));
   }, []);
 
-  let sumMoney = model?.configurations.reduce(
-    (a, b) => a.cost * a.running_qty + b.cost * b.running_qty
-  );
+  let arr1 = model?.configurations.map((e) => {
+    return Number(e.cost) * e.running_qty;
+  });
+
+  let sumMoney = arr1?.reduce((a, b) => a + b);
+
   let factNats = sumMoney * (model?.price1 / 100);
   let factAvg = sumMoney + factNats;
   let showNats = factAvg * (model?.price2 / 100);
@@ -99,14 +100,16 @@ export default function Typemodels() {
     let changeId = Number(btnId);
     if (changeId === 1) {
       setLoading(true);
-      console.log(id);
-      console.log(model);
       axios
         .put(`/model`, {
           model_id: id,
           price1: precent.precent,
         })
-        .then((res) => console.log(res))
+        .then((res) => {
+          if(res.status===200) {
+            toast.success("Foiz muvaffaqiyatli o'zgartirildi")
+          }
+        })
         .finally(() => {
           setIsUpdateOpen(false);
           setLoading(false);
@@ -117,10 +120,13 @@ export default function Typemodels() {
             })
             .catch((err) => console.log(err));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if(err) {
+            toast.error("Foiz o'zgarmadi qayta urinib ko'ring")
+          }
+        });
     } else if (changeId === 2) {
       setLoading(true);
-      console.log(id);
       axios
         .put(`/model`, {
           model_id: id,
@@ -140,7 +146,6 @@ export default function Typemodels() {
         .catch((err) => console.log(err));
     } else if (changeId === 3) {
       setLoading(true);
-      console.log(id);
       axios
         .put(`/model`, {
           model_id: id,
@@ -160,7 +165,6 @@ export default function Typemodels() {
         .catch((err) => console.log(err));
     } else if (changeId === 4) {
       setLoading(true);
-      console.log(id);
       axios
         .put(`/model`, {
           model_id: id,
@@ -184,7 +188,6 @@ export default function Typemodels() {
   let bg = document.querySelector(".big-wrapper");
 
   bg?.addEventListener("scroll", (e) => {
-    console.log();
     if (
       document.querySelector(".products-header").getBoundingClientRect().y < 230
     ) {
@@ -200,7 +203,6 @@ export default function Typemodels() {
     <div className="app-container">
       <Navbar />
       <div className="app-content">
-        {/* <Header headerInfos={data} /> */}
         <Actions />
         <Link style={{ color: "white", width: "170px" }} to="/models">
           <h3>{"< Back to models"}</h3>
@@ -235,6 +237,7 @@ export default function Typemodels() {
                 onClick={() => {
                   setIsUpdateOpen(true);
                   setPrecent({
+                    ...precent,
                     id: 1,
                     precent: model?.price1,
                     cost: sumMoney,
@@ -484,7 +487,12 @@ export default function Typemodels() {
                     </div>
                     <div className="product-cell category">
                       <span className="cell-label">Edit Config:</span>
-                      <button id={item.id}>Edit</button>
+                      <button
+                        id={item.id}
+                        onClick={(e) => OpenEditModal(e.target.id)}
+                      >
+                        Edit
+                      </button>
                     </div>
                   </div>
                 );
@@ -544,7 +552,6 @@ export default function Typemodels() {
         <button
           onClick={() => {
             filterObj(updateData);
-            console.log(modalData);
           }}
           type="button"
           className="add_modal_submit_btn"

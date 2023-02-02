@@ -7,7 +7,7 @@ import admin from "../../Assets/img/admin.jpg";
 import { GetFetchContext } from "../../Context/GetFetchContext/GetFetchContext";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import axios from "axios";
-import Toast from "../../Components/Toast/Toast";
+import { toast } from "react-toastify";
 
 export default function Users() {
   const { isOpen, setIsOpen, setIsToastOpen } = useContext(OpenModal);
@@ -45,14 +45,22 @@ export default function Users() {
         username: userData.username,
         password: userData.password,
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        if(res.status === 200 || 201) {
+          toast.success("Added new user")
+        }
+      })
       .finally(() => {
         setLoading(false)
         setIsOpen(false)
         axios.get("/users")
           .then(res => setUsers(res.data))
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        if(err) {
+          toast.error("User qo'shilmadi qayta urinib ko'ring")
+        }
+      })
   };
 
   useEffect(() => {

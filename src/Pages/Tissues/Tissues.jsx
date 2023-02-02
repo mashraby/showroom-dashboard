@@ -6,6 +6,7 @@ import Navbar from "../../Components/Navbar/Navbar";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import accounting from "accounting";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Tissues() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
@@ -34,8 +35,17 @@ export default function Tissues() {
         price1: tissuePrice1,
         price2: tissuePrice2,
       })
-      .then((res) => console.log(res))
-      .finally(() => {
+      .then((res) => {
+        if(res.status===200) {
+          toast.success("Added new tissue")
+        }
+      })
+        .catch(err => {
+          if(err) {
+            toast.error("Tissue qo'shilmadi qayta urinib koring")
+          }
+        }) 
+        .finally(() => {
         setSendTissueLoad(false);
         setIsOpen(false);
         axios.get("/tissue").then((res) => setTissues(res.data));
