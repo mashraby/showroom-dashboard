@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Companys from "./Pages/Companys/Companys";
-import Furnute_types from "./Pages/Furnuture_types/Furnute_types";
+import FurnuteTypes from "./Pages/FurnutureTypes/FurnuteTypes";
 import Login from "./Pages/Login/Login";
 import Models from "./Pages/Models/Models";
 import NotFound from "./Pages/NotFound/NotFound";
@@ -28,7 +28,7 @@ function App() {
             <Route path="/" element={<Roles />} />
             <Route path="/users" element={<Users />} />
             <Route path="/companys" element={<Companys />} />
-            <Route path="/furniture_types" element={<Furnute_types />} />
+            <Route path="/furniture_types" element={<FurnuteTypes />} />
             <Route path="/models" element={<Models />} />
             <Route path="/typemodels/:id" element={<Typemodels />} />
             <Route path="/configurations" element={<Configurations />} />

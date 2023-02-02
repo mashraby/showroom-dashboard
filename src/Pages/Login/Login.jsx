@@ -1,65 +1,41 @@
+import axios from "axios";
 import { useRef } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import eye_close from "../../Assets/svg/eye-close.svg";
 import eye_open from "../../Assets/svg/eye-open.svg";
 import "./Login.css";
 
 const Login = () => {
   const passInput = useRef();
-  const userNameInput = useRef();
   const submitBtn = useRef();
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [wrong, setWrong] = useState(false);
-
-  const SubmitHandler = () => {
-    if (username === "") {
-      userNameInput.current.style.border = "2px solid red"
-      userNameInput.current.placeholder = "username kiritilishi shart!"
-    } else {
-      userNameInput.current.classList.remove("error-input")
+  const SubmitHandler = (e) => {
+    e.preventDefault();
+    if (username !== "" && password !== "") {
+      axios
+        .post("/login", {
+          username,
+          password,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.token) {
+            window.localStorage.setItem("token", res.data.token);
+            navigate("/");
+          }
+        })
+        .catch((err) => {
+          if (err.message === "Request failed with status code 409") {
+            toast.error("Username yoki password xato");
+          }
+        });
     }
-    if (password === "") {
-      passInput.current.classList.add("error-input")
-      passInput.current.placeholder = "password kiritilishi shart!"
-    } else {
-      passInput.current.classList.remove("error-input")
-    }
-
-    if(username!==""&&password!=="") {
-      setWrong(true)
-    }
-
-    fetch("http://localhost:9000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.token) {
-          window.localStorage.setItem("token", data.token);
-          navigate("/");
-        } else {
-          console.log("Password or username wrong");
-        }
-      })
-      .catch((err) => {
-        if (err.message === "Network request failed") {
-          console.log("Network ");
-        } else {
-          console.log(err);
-        }
-      });
   };
 
   let isShowPassword = false;
@@ -77,14 +53,13 @@ const Login = () => {
 
   return (
     <div className="login_wrapper">
-      <div className="box-login">
+      <form onSubmit={(e) => SubmitHandler(e)} className="box-login">
         <h1 className="login_heading">Login</h1>
         <input
-          required={true}
-          ref={userNameInput}
           onChange={(e) => {
             setUsername(e.target.value);
           }}
+          required={true}
           className="input-auth"
           type="text"
           placeholder="Username"
@@ -92,11 +67,11 @@ const Login = () => {
 
         <div className="password_input">
           <input
-            required={true}
             ref={passInput}
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            required={true}
             className="input-auth"
             type="password"
             placeholder="Password"
@@ -110,14 +85,10 @@ const Login = () => {
           />
         </div>
 
-        {wrong ? (
-          <p className="alert-wrong">Wrong Password Or Username !!!..</p>
-        ) : null}
-
-        <button ref={submitBtn} onClick={SubmitHandler} className="submit-btn">
+        <button ref={submitBtn} className="submit-btn">
           Submit
         </button>
-      </div>
+      </form>
     </div>
   );
 };

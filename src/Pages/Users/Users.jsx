@@ -10,16 +10,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 export default function Users() {
-  const { isOpen, setIsOpen, setIsToastOpen } = useContext(OpenModal);
+  const { isOpen, setIsOpen } = useContext(OpenModal);
   const [users, setUsers] = useState([]);
   const { roles } = useContext(GetFetchContext);
   const [companys, setCompanys] = useState([]);
   const [loading, setLoading] = useState(false);
-  const access_token = localStorage.getItem("token");
-  const [toastingData, setToastingData] = useState({
-    message: "",
-    status: null
-  })
   const [userData, setUserData] = useState({
     username: "",
     password: "",
@@ -46,21 +41,20 @@ export default function Users() {
         password: userData.password,
       })
       .then((res) => {
-        if(res.status === 200 || 201) {
-          toast.success("Added new user")
+        if (res.status === 200 || 201) {
+          toast.success("Added new user");
         }
       })
       .finally(() => {
-        setLoading(false)
-        setIsOpen(false)
-        axios.get("/users")
-          .then(res => setUsers(res.data))
+        setLoading(false);
+        setIsOpen(false);
+        axios.get("/users").then((res) => setUsers(res.data));
       })
       .catch((err) => {
-        if(err) {
-          toast.error("User qo'shilmadi qayta urinib ko'ring")
+        if (err) {
+          toast.error("User qo'shilmadi qayta urinib ko'ring");
         }
-      })
+      });
   };
 
   useEffect(() => {
@@ -72,12 +66,7 @@ export default function Users() {
 
   useEffect(() => {
     axios
-      .get("/company", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
+      .get("/company")
       .then((res) => setCompanys(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -90,70 +79,10 @@ export default function Users() {
         <Actions />
         <div className="products-area-wrapper tableView">
           <div className="products-header">
-            <div className="product-cell image">
-              User ID
-              <button className="sort-button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="product-cell category">
-              User Name
-              <button className="sort-button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="product-cell status-cell">
-              Status
-              <button className="sort-button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="product-cell sales">
-              User Role
-              <button className="sort-button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                  />
-                </svg>
-              </button>
-            </div>
+            <div className="product-cell image">User ID</div>
+            <div className="product-cell category">User Name</div>
+            <div className="product-cell status-cell">Status</div>
+            <div className="product-cell sales">User Role</div>
           </div>
           {users &&
             users.map((item, index) => {
@@ -292,7 +221,6 @@ export default function Users() {
           {loading ? "loading..." : "Add User"}
         </button>
       </form>
-      {/* <Toast data={toastingData} /> */}
     </div>
   );
 }

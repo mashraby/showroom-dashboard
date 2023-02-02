@@ -1,6 +1,5 @@
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import React, { useContext, useEffect } from "react";
-import { useState } from "react";
 import { toast } from "react-toastify";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
@@ -8,16 +7,11 @@ import Navbar from "../../Components/Navbar/Navbar";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 
 export default function Companys() {
-  const {
-    isOpen,
-    setIsOpen,
-  } = useContext(OpenModal);
-
+  const { isOpen, setIsOpen } = useContext(OpenModal);
   const [companys, setCompanys] = useState([]);
   const [companyName, setCompanyName] = useState("");
   const [companyStatus, setCompanyStatus] = useState("");
   const [sendCompLoad, setSendCompLoad] = useState(false);
-  const access_token = localStorage.getItem("token");
 
   const data = {
     headerInfos: {
@@ -29,47 +23,31 @@ export default function Companys() {
   const sendCompany = (e) => {
     e.preventDefault();
     setSendCompLoad(true);
-
     axios
       .post("/company", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${access_token}`,
-        },
         name: companyName,
         status: companyStatus,
       })
       .then((res) => {
-        if(res.status===200) {
-          toast.success("Added new company")
+        if (res.status === 200) {
+          toast.success("Added new company");
         }
       })
       .catch((err) => {
-        if(err) {
-          toast.error("Company qo'shilmadi qayta urinib ko'ring")
+        if (err) {
+          toast.error("Company qo'shilmadi qayta urinib ko'ring");
         }
       })
       .finally(() => {
         setSendCompLoad(false);
-        setIsOpen(false)
-        axios.get("company", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${access_token}`,
-          },
-        })
-        .then(res => setCompanys(res.data))
+        setIsOpen(false);
+        axios.get("company").then((res) => setCompanys(res.data));
       });
   };
 
   useEffect(() => {
     axios
-      .get("/company", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${access_token}`,
-        },
-      })
+      .get("/company")
       .then((res) => setCompanys(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -82,54 +60,9 @@ export default function Companys() {
         <Actions />
         <div className="products-area-wrapper tableView">
           <div className="products-header">
-            <div className="product-cell image">
-              Company ID
-              <button className="sort-button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="product-cell category">
-              Company Name
-              <button className="sort-button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="product-cell category">
-              Company Status
-              <button className="sort-button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                  />
-                </svg>
-              </button>
-            </div>
+            <div className="product-cell image">Company ID</div>
+            <div className="product-cell category">Company Name</div>
+            <div className="product-cell category">Company Status</div>
           </div>
           {companys &&
             companys.map((item, index) => {
@@ -214,7 +147,7 @@ export default function Companys() {
           </div>
         </div>
         <button className="add_modal_submit_btn">
-          { sendCompLoad ? "loading..." : "Add Company" }
+          {sendCompLoad ? "loading..." : "Add Company"}
         </button>
       </form>
     </div>
