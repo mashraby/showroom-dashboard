@@ -131,7 +131,17 @@ const TissueConf = () => {
                     </div>
                     <div className="product-cell stock">
                       <span className="cell-label">Config Hex Color:</span>
-                      {item.hex_color}
+                      <div
+                        style={{
+                          backgroundColor: `${item.hex_color}`,
+                          width: `45px`,
+                          height: `25px`,
+                          borderRadius: `5px`,
+                          border: `1px solid black`,
+                          boxShadow: `1px 1px 5px white`,
+                        }}
+                      ></div>
+                      {/* {item.hex_color} */}
                     </div>
                   </div>
                 );
