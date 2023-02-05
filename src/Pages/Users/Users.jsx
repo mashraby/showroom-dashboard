@@ -49,6 +49,10 @@ export default function Users() {
         setLoading(false);
         setIsOpen(false);
         axios.get("/users").then((res) => setUsers(res.data));
+        e.target.username.value = null;
+        e.target.password.value = null;
+        e.target.role.value = null;
+        e.target.company.value = null;
       })
       .catch((err) => {
         if (err) {
@@ -66,7 +70,12 @@ export default function Users() {
 
   useEffect(() => {
     axios
-      .get("/company")
+      .get("/company", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
       .then((res) => setCompanys(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -157,6 +166,7 @@ export default function Users() {
                 setUserData({ ...userData, username: e.target.value })
               }
               type="text"
+              name="username"
               placeholder="Username"
             />
           </div>
@@ -167,6 +177,7 @@ export default function Users() {
               onChange={(e) =>
                 setUserData({ ...userData, password: e.target.value })
               }
+              name="password"
               type="password"
               placeholder="password"
             />
@@ -178,8 +189,7 @@ export default function Users() {
               onChange={(e) =>
                 setUserData({ ...userData, role: e.target.value })
               }
-              name=""
-              id=""
+              name="role"
             >
               <option value="Choose a role" disabled>
                 Choose a role
@@ -197,6 +207,7 @@ export default function Users() {
           <div className="input-box">
             <span className="input-label">Choose a company</span>
             <select
+              name="company"
               defaultValue="Choose a company"
               onChange={(e) =>
                 setUserData({ ...userData, company: e.target.value })

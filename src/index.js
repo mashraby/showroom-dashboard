@@ -7,11 +7,6 @@ import { Provider as ThemeProvider } from "./Context/ThemeContext/ThemeContext";
 import { Provider as OpenModalProvider } from "./Context/OpenModal/OpenModalContext";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:9000";
-const access_token = localStorage.getItem("token");
-axios.defaults.headers = {
-  "Content-Type": "application/json",
-  "Authorization": `Bearer ${access_token}`,
-};
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

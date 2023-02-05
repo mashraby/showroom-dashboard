@@ -38,6 +38,7 @@ export default function Roles() {
         setLoading(false);
         setIsOpen(false);
         axios.get("/roles").then((res) => setRoles(res.data));
+        e.target.role_name.value = null
       })
       .catch((err) => {
         if (err) {
@@ -121,6 +122,7 @@ export default function Roles() {
             <input
               required={true}
               type="text"
+              name="role_name"
               onChange={(e) => setRoleName(e.target.value)}
               placeholder="role name"
             />
