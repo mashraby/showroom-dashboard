@@ -154,10 +154,11 @@ export default function Tissues() {
             <input
               required={true}
               defaultValue={accounting.formatNumber(tissueCost, 0, " ")}
-              type="text"
-              onChange={(e) =>
-                setTissueCost(accounting.unformat(e.target.value))
-              }
+              type="number"
+              onChange={(e) => {
+                accounting.formatNumber(e.target.value, 0, " ");
+                setTissueCost(accounting.unformat(e.target.value));
+              }}
               placeholder="tissue cost"
             />
           </div>
@@ -166,10 +167,11 @@ export default function Tissues() {
             <input
               required={true}
               defaultValue={accounting.formatNumber(tissuePrice1, 0, " ")}
-              type="text"
-              onChange={(e) =>
-                setTissuePrice1(accounting.unformat(e.target.value))
-              }
+              type="number"
+              onChange={(e) => {
+                accounting.formatNumber(e.target.value, 0, " ");
+                setTissuePrice1(accounting.unformat(e.target.value));
+              }}
               placeholder="tissue price 1"
             />
           </div>
@@ -178,10 +180,10 @@ export default function Tissues() {
             <input
               required={true}
               defaultValue={accounting.formatNumber(tissuePrice2, 0, " ")}
-              type="text"
-              onChange={(e) =>
-                setTissuePrice2(accounting.unformat(e.target.value))
-              }
+              type="number"
+              onChange={(e) => {
+                setTissuePrice2(accounting.unformat(e.target.value));
+              }}
               placeholder="tissue price 2"
             />
           </div>

@@ -7,6 +7,7 @@ import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import "./Typemodel.css";
 import Actions from "../../Components/Actions/Actions";
 import { toast } from "react-toastify";
+import { useRef } from "react";
 
 export default function Typemodels() {
   const { id, tissueId } = useParams();
@@ -17,9 +18,14 @@ export default function Typemodels() {
   const [model, setModel] = useState();
   const [modalData, setModalData] = useState({});
   const [loading, setLoading] = useState(false);
+  const percentRef = useRef();
   const [precent, setPrecent] = useState({
     id: null,
     precent: null,
+    price1: null,
+    price2: null,
+    price3: null,
+    sale: null,
     cost: null,
     nats: null,
     avg: null,
@@ -38,7 +44,7 @@ export default function Typemodels() {
       .then((res) => {
         setModel(res.data);
       })
-      .catch((err) => console.log(err));  
+      .catch((err) => console.log(err));
 
     axios
       .get(`/confs/${tissueId}`)
@@ -50,7 +56,7 @@ export default function Typemodels() {
     return Number(e.cost) * e.running_qty;
   });
 
-  let sumMoney = arr1 && arr1?.length !== 0 && arr1?.reduce((a, b) => a + b)  
+  let sumMoney = arr1 && arr1?.length !== 0 && arr1?.reduce((a, b) => a + b);
   let factNats = sumMoney * (model?.price1 / 100);
   let factAvg = sumMoney + factNats;
   let showNats = factAvg * (model?.price2 / 100);
@@ -93,6 +99,7 @@ export default function Typemodels() {
 
   const changePrecent = (btnId) => {
     let changeId = Number(btnId);
+
     if (changeId === 1) {
       setLoading(true);
       axios
@@ -112,6 +119,7 @@ export default function Typemodels() {
             .get(`/model/${id}`)
             .then((res) => {
               setModel(res.data);
+              // percentRef.current.value = res.data.price1;
             })
             .catch((err) => console.log(err));
         })
@@ -218,6 +226,11 @@ export default function Typemodels() {
     }
   });
 
+  const openPercentEdit = (obj) => {
+    setIsUpdateOpen(true);
+    setPrecent(obj);
+  };
+
   return (
     <div className="app-container">
       <Navbar />
@@ -254,11 +267,11 @@ export default function Typemodels() {
               </div>
               <button
                 onClick={() => {
-                  setIsUpdateOpen(true);
-                  setPrecent({
-                    ...precent,
+                  axios.get(`/model/${id}`).then((res) => setModel(res.data));
+                  openPercentEdit({
                     id: 1,
                     precent: model?.price1,
+                    price1: model?.price1,
                     cost: sumMoney,
                     nats: factNats,
                     avg: factAvg,
@@ -289,11 +302,11 @@ export default function Typemodels() {
               </div>
               <button
                 onClick={() => {
-                  setIsUpdateOpen(true);
-                  setPrecent({
-                    ...precent,
+                  axios.get(`/model/${id}`).then((res) => setModel(res.data));
+                  openPercentEdit({
                     id: 2,
                     precent: model?.price2,
+                    price2: model?.price2,
                     cost: factAvg,
                     nats: showNats,
                     avg: showAvg,
@@ -323,11 +336,11 @@ export default function Typemodels() {
               </div>
               <button
                 onClick={() => {
-                  setIsUpdateOpen(true);
-                  setPrecent({
-                    ...precent,
+                  axios.get(`/model/${id}`).then((res) => setModel(res.data));
+                  openPercentEdit({
                     id: 3,
                     precent: model?.price3,
+                    price3: model?.price3,
                     cost: showAvg,
                     nats: dillNats,
                     avg: dilAvg,
@@ -357,11 +370,11 @@ export default function Typemodels() {
               </div>
               <button
                 onClick={() => {
-                  setIsUpdateOpen(true);
-                  setPrecent({
-                    ...precent,
+                  axios.get(`/model/${id}`).then((res) => setModel(res.data));
+                  openPercentEdit({
                     id: 4,
                     precent: model?.sale,
+                    sale: model?.sale,
                     cost: dilAvg,
                     nats: aksNats,
                     avg: aksAvg,
@@ -515,13 +528,14 @@ export default function Typemodels() {
       >
         <h1 className="add_modal_title">Edit</h1>
         <div className="input-groups">
-          <div className="input-box">
+          <div className="input-boxes">
             <span>Cost:</span>
-            <b>{accounting.formatNumber(precent.cost, 0, " ")}</b>
+            <b>{accounting.formatNumber(precent.cost, 0, " ")} so'm</b>
           </div>
-          <div className="input-box">
-            <span className="input-label">Edit precent</span>
+          <div className="input-boxes">
+            <span className="input-label">Edit percent:</span>
             <input
+              ref={percentRef}
               onChange={(e) => {
                 let newNats = precent.cost * (e.target.value / 100);
                 let newAvg = newNats + precent.cost;
@@ -532,23 +546,26 @@ export default function Typemodels() {
                   avg: newAvg,
                 });
               }}
-              defaultValue={precent.precent}
+              name="precent"
+              maxLength={2}
               required={true}
               type="text"
-              placeholder="Edit precent"
+              placeholder="Edit %"
             />
           </div>
-          <div className="input-box">
-            наценка: <b>{accounting.formatNumber(precent.nats, 0, " ")}</b> so'm
+          <div className="input-boxes">
+            наценка: <b>{accounting.formatNumber(precent.nats, 0, " ")} so'm</b>
           </div>
-          <div className="input-box">
-            Avarage: <b>{accounting.formatNumber(precent.avg, 0, " ")}</b> so'm
+          <div className="input-boxes">
+            Avarage: <b>{accounting.formatNumber(precent.avg, 0, " ")} so'm</b>
           </div>
         </div>
         <button
-          id={precent.id}
-          onClick={(e) => changePrecent(e.target.id)}
           type="button"
+          id={precent.id}
+          onClick={(e) => {
+            changePrecent(e.target.id);
+          }}
           className="add_modal_submit_btn"
         >
           {loading ? "loading..." : "Edit precent"}

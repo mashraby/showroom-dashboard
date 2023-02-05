@@ -47,7 +47,12 @@ export default function Companys() {
 
   useEffect(() => {
     axios
-      .get("/company")
+      .get("/company", {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+      })
       .then((res) => setCompanys(res.data))
       .catch((err) => console.log(err));
   }, []);
