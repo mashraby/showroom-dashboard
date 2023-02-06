@@ -1,0 +1,72 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.wrapper h2 {
+    color: #fff;
+}
+
+.loader {
+  padding-top: 34px;
+  padding-left: 50px;
+  height: 100px;
+}
+
+.dots {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.dots .dot {
+  position: absolute;
+  top: 27px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #fefefe;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.dots .dot-1 {
+  left: 6px;
+  animation: dot1 0.6s infinite;
+}
+.dots .dot-2 {
+  left: 6px;
+  animation: dot2 0.6s infinite;
+}
+.dots .dot-3 {
+  left: 26px;
+  animation: dot2 0.6s infinite;
+}
+.dots .dot-4 {
+  left: 45px;
+  animation: dot3 0.6s infinite;
+}
+@keyframes dot1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes dot3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes dot2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(19px, 0);
+  }
+}

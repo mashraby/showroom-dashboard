@@ -5,12 +5,14 @@ import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import { toast } from "react-toastify";
+import Spinner from "../../Components/Spinner/Spinner";
 
 export default function Legs() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
   const [legs, setlegs] = useState([]);
   const [legName, setLegName] = useState("");
   const [sendLegLoad, setSendLegLoad] = useState(false);
+  const [getLoading, setGetLoading] = useState(true);
 
   const data = {
     headerInfos: {
@@ -23,6 +25,9 @@ export default function Legs() {
     axios
       .get("/legs")
       .then((res) => setlegs(res.data))
+      .finally(() => {
+        setGetLoading(false);
+      })
       .catch((err) => console.error(err));
   }, []);
 
@@ -57,43 +62,47 @@ export default function Legs() {
       <div className="app-content">
         <Header headerInfos={data} />
         <Actions />
-        <div className="products-area-wrapper tableView">
-          <div className="products-header">
-            <div className="product-cell image">Leg ID</div>
-            <div className="product-cell category">Leg Name</div>
+        {getLoading ? (
+          <Spinner />
+        ) : (
+          <div className="products-area-wrapper tableView">
+            <div className="products-header">
+              <div className="product-cell image">Leg ID</div>
+              <div className="product-cell category">Leg Name</div>
+            </div>
+            {legs?.map((item, index) => {
+              return (
+                <div key={index + 1} className="products-row">
+                  <button className="cell-more-button">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="feather feather-more-vertical"
+                    >
+                      <circle cx="12" cy="12" r="1" />
+                      <circle cx="12" cy="5" r="1" />
+                      <circle cx="12" cy="19" r="1" />
+                    </svg>
+                  </button>
+                  <div className="product-cell image">
+                    <span>{index + 1}</span>
+                  </div>
+                  <div className="product-cell category">
+                    <span className="cell-label">Leg Name:</span>
+                    {item.name}
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          {legs?.map((item, index) => {
-            return (
-              <div key={index + 1} className="products-row">
-                <button className="cell-more-button">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="feather feather-more-vertical"
-                  >
-                    <circle cx="12" cy="12" r="1" />
-                    <circle cx="12" cy="5" r="1" />
-                    <circle cx="12" cy="19" r="1" />
-                  </svg>
-                </button>
-                <div className="product-cell image">
-                  <span>{index + 1}</span>
-                </div>
-                <div className="product-cell category">
-                  <span className="cell-label">Leg Name:</span>
-                  {item.name}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        )}
       </div>
 
       <div

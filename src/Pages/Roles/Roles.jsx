@@ -8,12 +8,14 @@ import { useContext } from "react";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Spinner from "../../Components/Spinner/Spinner";
 
 export default function Roles() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
   const [roles, setRoles] = useState([]);
   const [roleName, setRoleName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [getLoading, setGetLoading] = useState(true);
 
   const data = {
     headerInfos: {
@@ -38,7 +40,7 @@ export default function Roles() {
         setLoading(false);
         setIsOpen(false);
         axios.get("/roles").then((res) => setRoles(res.data));
-        e.target.role_name.value = null
+        e.target.role_name.value = null;
       })
       .catch((err) => {
         if (err) {
@@ -51,6 +53,9 @@ export default function Roles() {
     axios
       .get("/roles")
       .then((res) => setRoles(res.data))
+      .finally(() => {
+        setGetLoading(false);
+      })
       .catch((err) => console.error(err));
   }, []);
 
@@ -60,48 +65,52 @@ export default function Roles() {
       <div className="app-content">
         <Header headerInfos={data} />
         <Actions />
-        <div className="products-area-wrapper tableView">
-          <div className="products-header">
-            <div className="product-cell image">Role ID</div>
-            <div className="product-cell category">Role Name</div>
+        {getLoading ? (
+          <Spinner />
+        ) : (
+          <div className="products-area-wrapper tableView">
+            <div className="products-header">
+              <div className="product-cell image">Role ID</div>
+              <div className="product-cell category">Role Name</div>
+            </div>
+            {roles &&
+              roles.map((item, index) => {
+                return (
+                  <div key={index + 1} className="products-row">
+                    <button className="cell-more-button">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="feather feather-more-vertical"
+                      >
+                        <circle cx="12" cy="12" r="1" />
+                        <circle cx="12" cy="5" r="1" />
+                        <circle cx="12" cy="19" r="1" />
+                      </svg>
+                    </button>
+                    <div className="product-cell image">
+                      <img
+                        src={item.role_name === "SELLER" ? seller : admin}
+                        alt="product"
+                      />
+                      <span>{index + 1}</span>
+                    </div>
+                    <div className="product-cell category">
+                      <span className="cell-label">Role Name:</span>
+                      {item.role_name}
+                    </div>
+                  </div>
+                );
+              })}
           </div>
-          {roles &&
-            roles.map((item, index) => {
-              return (
-                <div key={index + 1} className="products-row">
-                  <button className="cell-more-button">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-more-vertical"
-                    >
-                      <circle cx="12" cy="12" r="1" />
-                      <circle cx="12" cy="5" r="1" />
-                      <circle cx="12" cy="19" r="1" />
-                    </svg>
-                  </button>
-                  <div className="product-cell image">
-                    <img
-                      src={item.role_name === "SELLER" ? seller : admin}
-                      alt="product"
-                    />
-                    <span>{index + 1}</span>
-                  </div>
-                  <div className="product-cell category">
-                    <span className="cell-label">Role Name:</span>
-                    {item.role_name}
-                  </div>
-                </div>
-              );
-            })}
-        </div>
+        )}
       </div>
 
       <div

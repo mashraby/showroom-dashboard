@@ -8,9 +8,10 @@ import "./Typemodel.css";
 import Actions from "../../Components/Actions/Actions";
 import { toast } from "react-toastify";
 import { useRef } from "react";
+import Spinner from "../../Components/Spinner/Spinner";
 
 export default function Typemodels() {
-  const { id, tissueId } = useParams();
+  const { id } = useParams();
 
   const { isOpen, setIsOpen, isUpdateOpen, setIsUpdateOpen } =
     useContext(OpenModal);
@@ -18,6 +19,7 @@ export default function Typemodels() {
   const [model, setModel] = useState();
   const [modalData, setModalData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [getLoading, setGetLoading] = useState(true);
   const percentRef = useRef();
   const [precent, setPrecent] = useState({
     id: null,
@@ -44,11 +46,9 @@ export default function Typemodels() {
       .then((res) => {
         setModel(res.data);
       })
-      .catch((err) => console.log(err));
-
-    axios
-      .get(`/confs/${tissueId}`)
-      .then((res) => console.log(res))
+      .finally(() => {
+        setGetLoading(false);
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -251,19 +251,27 @@ export default function Typemodels() {
                 <h3>Factory</h3>
                 <hr />
                 <br />
-                <p>
-                  Cost:
-                  <b>{accounting.formatNumber(sumMoney, 0, " ")}</b> So'm
-                </p>
-                <p id="1" className="precent">
-                  Percent: {model?.price1} %
-                </p>
-                <p>наценка: {accounting.formatNumber(factNats, 0, " ")} So'm</p>
-                <br />
-                <p>
-                  Avarage: <b>{accounting.formatNumber(factAvg, 0, " ")}</b>{" "}
-                  so'm
-                </p>
+                {getLoading ? (
+                  <Spinner />
+                ) : (
+                  <>
+                    <p>
+                      Cost:
+                      <b>{accounting.formatNumber(sumMoney, 0, " ")}</b> So'm
+                    </p>
+                    <p id="1" className="precent">
+                      Percent: {model?.price1} %
+                    </p>
+                    <p>
+                      наценка: {accounting.formatNumber(factNats, 0, " ")} So'm
+                    </p>
+                    <br />
+                    <p>
+                      Avarage: <b>{accounting.formatNumber(factAvg, 0, " ")}</b>{" "}
+                      so'm
+                    </p>
+                  </>
+                )}
               </div>
               <button
                 onClick={() => {
@@ -286,19 +294,25 @@ export default function Typemodels() {
                 <h3>Showroom</h3>
                 <hr />
                 <br />
-                <p>
-                  Cost:
-                  <b>{accounting.formatNumber(factAvg, 0, " ")}</b> So'm
-                </p>
-                <p id="2" className="precent">
-                  Percent: {model?.price2} %
-                </p>
-                <p>наценка: {accounting.formatNumber(showNats, 0, " ")}</p>
-                <br />
-                <p>
-                  Avarage: <b>{accounting.formatNumber(showAvg, 0, " ")}</b>{" "}
-                  so'm
-                </p>
+                {getLoading ? (
+                  <Spinner />
+                ) : (
+                  <>
+                    <p>
+                      Cost:
+                      <b>{accounting.formatNumber(factAvg, 0, " ")}</b> So'm
+                    </p>
+                    <p id="2" className="precent">
+                      Percent: {model?.price2} %
+                    </p>
+                    <p>наценка: {accounting.formatNumber(showNats, 0, " ")}</p>
+                    <br />
+                    <p>
+                      Avarage: <b>{accounting.formatNumber(showAvg, 0, " ")}</b>{" "}
+                      so'm
+                    </p>
+                  </>
+                )}
               </div>
               <button
                 onClick={() => {
@@ -321,18 +335,25 @@ export default function Typemodels() {
                 <h3>Diller</h3>
                 <hr />
                 <br />
-                <p>
-                  Cost:
-                  <b>{accounting.formatNumber(showAvg, 0, " ")}</b> So'm
-                </p>
-                <p id="3" className="precent">
-                  Percent: {model?.price3} %
-                </p>
-                <p>наценка: {accounting.formatNumber(dillNats, 0, " ")}</p>
-                <br />
-                <p>
-                  Avarage: <b>{accounting.formatNumber(dilAvg, 0, " ")}</b> so'm
-                </p>
+                {getLoading ? (
+                  <Spinner />
+                ) : (
+                  <>
+                    <p>
+                      Cost:
+                      <b>{accounting.formatNumber(showAvg, 0, " ")}</b> So'm
+                    </p>
+                    <p id="3" className="precent">
+                      Percent: {model?.price3} %
+                    </p>
+                    <p>наценка: {accounting.formatNumber(dillNats, 0, " ")}</p>
+                    <br />
+                    <p>
+                      Avarage: <b>{accounting.formatNumber(dilAvg, 0, " ")}</b>{" "}
+                      so'm
+                    </p>
+                  </>
+                )}
               </div>
               <button
                 onClick={() => {
@@ -355,18 +376,25 @@ export default function Typemodels() {
                 <h3>aksiya</h3>
                 <hr />
                 <br />
-                <p>
-                  Cost:
-                  <b>{accounting.formatNumber(dilAvg, 0, " ")}</b> So'm
-                </p>
-                <p id="4" className="precent">
-                  Percent: {model?.sale} %
-                </p>
-                <p>наценка: {accounting.formatNumber(aksNats, 0, " ")}</p>
-                <br />
-                <p>
-                  Avarage: <b>{accounting.formatNumber(aksAvg, 0, " ")}</b> so'm
-                </p>
+                {getLoading ? (
+                  <Spinner />
+                ) : (
+                  <>
+                    <p>
+                      Cost:
+                      <b>{accounting.formatNumber(dilAvg, 0, " ")}</b> So'm
+                    </p>
+                    <p id="4" className="precent">
+                      Percent: {model?.sale} %
+                    </p>
+                    <p>наценка: {accounting.formatNumber(aksNats, 0, " ")}</p>
+                    <br />
+                    <p>
+                      Avarage: <b>{accounting.formatNumber(aksAvg, 0, " ")}</b>{" "}
+                      so'm
+                    </p>
+                  </>
+                )}
               </div>
               <button
                 onClick={() => {
@@ -393,68 +421,72 @@ export default function Typemodels() {
             Configuration
           </h1>
 
-          <div className="products-area-wrapper tableView">
-            <div className="products-header">
-              <div className="product-cell image">Configuration ID</div>
-              <div className="product-cell category">Configuration Name</div>
-              <div className="product-cell category">Configuration Cost</div>
-              <div className="product-cell category">Configuration Count</div>
-              <div className="product-cell category">Edit Configuration</div>
-            </div>
-            {model?.configurations &&
-              model.configurations.map((item, index) => {
-                return (
-                  <div key={index + 1} className="products-row">
-                    <button className="cell-more-button">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="feather feather-more-vertical"
-                      >
-                        <circle cx="12" cy="12" r="1" />
-                        <circle cx="12" cy="5" r="1" />
-                        <circle cx="12" cy="19" r="1" />
-                      </svg>
-                    </button>
-                    <div className="product-cell image">
-                      <img
-                        src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
-                        alt="product"
-                      />
-                      <span>{index + 1}</span>
-                    </div>
-                    <div className="product-cell category">
-                      <span className="cell-label">Config Name:</span>
-                      {item.name}
-                    </div>
-                    <div className="product-cell category">
-                      <span className="cell-label">Config Cost:</span>
-                      {item.cost}
-                    </div>
-                    <div className="product-cell category">
-                      <span className="cell-label">Config Count:</span>
-                      {item.running_qty}
-                    </div>
-                    <div className="product-cell category">
-                      <span className="cell-label">Edit Config:</span>
-                      <button
-                        id={item.id}
-                        onClick={(e) => OpenEditModal(e.target.id)}
-                      >
-                        Edit
+          {getLoading ? (
+            <Spinner />
+          ) : (
+            <div className="products-area-wrapper tableView">
+              <div className="products-header">
+                <div className="product-cell image">Configuration ID</div>
+                <div className="product-cell category">Configuration Name</div>
+                <div className="product-cell category">Configuration Cost</div>
+                <div className="product-cell category">Configuration Count</div>
+                <div className="product-cell category">Edit Configuration</div>
+              </div>
+              {model?.configurations &&
+                model.configurations.map((item, index) => {
+                  return (
+                    <div key={index + 1} className="products-row">
+                      <button className="cell-more-button">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="feather feather-more-vertical"
+                        >
+                          <circle cx="12" cy="12" r="1" />
+                          <circle cx="12" cy="5" r="1" />
+                          <circle cx="12" cy="19" r="1" />
+                        </svg>
                       </button>
+                      <div className="product-cell image">
+                        <img
+                          src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+                          alt="product"
+                        />
+                        <span>{index + 1}</span>
+                      </div>
+                      <div className="product-cell category">
+                        <span className="cell-label">Config Name:</span>
+                        {item.name}
+                      </div>
+                      <div className="product-cell category">
+                        <span className="cell-label">Config Cost:</span>
+                        {item.cost}
+                      </div>
+                      <div className="product-cell category">
+                        <span className="cell-label">Config Count:</span>
+                        {item.running_qty}
+                      </div>
+                      <div className="product-cell category">
+                        <span className="cell-label">Edit Config:</span>
+                        <button
+                          id={item.id}
+                          onClick={(e) => OpenEditModal(e.target.id)}
+                        >
+                          Edit
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-          </div>
+                  );
+                })}
+            </div>
+          )}
         </div>
       </div>
 
