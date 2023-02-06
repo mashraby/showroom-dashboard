@@ -6,6 +6,7 @@ import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import Spinner from "../../Components/Spinner/Spinner";
+import accounting from "accounting";
 
 export default function Configurations() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
@@ -29,6 +30,8 @@ export default function Configurations() {
       btnTitle: "Add Configuration",
     },
   };
+
+  const allInputs = document.querySelectorAll("input");
 
   const sendConfiguration = (e) => {
     e.preventDefault();
@@ -59,6 +62,9 @@ export default function Configurations() {
           .get("configurations")
           .then((res) => setConfigurations(res.data))
           .catch((err) => console.log(err));
+        allInputs.forEach((input) => {
+          return (input.value = null);
+        });
       });
   };
 
@@ -166,8 +172,15 @@ export default function Configurations() {
             <span className="input-label">Enter a configuration Cost</span>
             <input
               required={true}
-              type="number"
-              onChange={(e) => setCost(e.target.value)}
+              type="text"
+              onChange={(e) => {
+                e.target.value = accounting.formatNumber(
+                  e.target.value,
+                  0,
+                  " "
+                );
+                setCost(accounting.unformat(e.target.value));
+              }}
               placeholder="configuration Cost"
             />
           </div>
@@ -177,7 +190,7 @@ export default function Configurations() {
               required={true}
               type="text"
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="configuration Tile"
+              placeholder="configuration Title"
             />
           </div>
           <div className="input-box">
@@ -186,7 +199,7 @@ export default function Configurations() {
               required={true}
               type="number"
               onChange={(e) => setRunningQty(e.target.value)}
-              placeholder="configuration Tile"
+              placeholder="configuration Quantity"
             />
           </div>
           <div className="input-box">

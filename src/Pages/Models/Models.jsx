@@ -25,6 +25,8 @@ export default function Models() {
     },
   };
 
+  const allInputs = document.querySelectorAll("input");
+
   const sendModel = (e) => {
     e.preventDefault();
     setSendModelLoad(true);
@@ -48,6 +50,9 @@ export default function Models() {
         setSendModelLoad(false);
         setIsOpen(false);
         axios.get("/models").then((res) => setModels(res.data));
+        allInputs.forEach((input) => {
+          return (input.value = null);
+        });
       });
   };
 

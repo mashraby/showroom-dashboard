@@ -15,6 +15,8 @@ export default function Furnute_types() {
   const [sendTypeLoad, setSendTypeLoad] = useState(false);
   const [getLoading, setGetLoading] = useState(true);
 
+  const allInputs = document.querySelectorAll("input");
+
   const sendType = (e) => {
     e.preventDefault();
     setSendTypeLoad(true);
@@ -37,6 +39,9 @@ export default function Furnute_types() {
         setSendTypeLoad(false);
         setIsOpen(false);
         axios.get("types").then((res) => setTypes(res.data));
+        allInputs.forEach((input) => {
+          return (input.value = null);
+        });
       });
   };
 

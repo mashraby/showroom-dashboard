@@ -6,7 +6,7 @@
 }
 
 .wrapper h2 {
-    color: #fff;
+    color: lightgreen;
 }
 
 .loader {
@@ -27,7 +27,7 @@
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background: #fefefe;
+  background: lightgreen;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
 .dots .dot-1 {

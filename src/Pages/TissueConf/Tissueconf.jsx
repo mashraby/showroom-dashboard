@@ -22,8 +22,6 @@ const TissueConf = () => {
     tissue: tissueId,
   });
 
-  console.log(tissue);
-
   useEffect(() => {
     axios
       .get(`tissue/${tissueId}`)
@@ -38,7 +36,7 @@ const TissueConf = () => {
       .get("/tissue-conf")
       .then((res) => setTissueConfs(res.data))
       .finally(() => {
-        setGetLoading(false)
+        setGetLoading(false);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -49,6 +47,8 @@ const TissueConf = () => {
       btnTitle: "Add Config",
     },
   };
+
+  const allInputs = document.querySelectorAll("input");
 
   const sendTissueConf = (e) => {
     e.preventDefault();
@@ -74,6 +74,9 @@ const TissueConf = () => {
         setTissueConfLoad(false);
         setIsOpen(false);
         axios.get("/tissue-conf").then((res) => setTissueConfs(res.data));
+        allInputs.forEach((input) => {
+          return (input.value = null);
+        });
       });
   };
 
