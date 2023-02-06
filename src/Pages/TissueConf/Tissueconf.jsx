@@ -6,12 +6,14 @@ import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
+import Spinner from "../../Components/Spinner/Spinner";
 
 const TissueConf = () => {
   const { isOpen, setIsOpen } = useContext(OpenModal);
   const [tissueConfs, setTissueConfs] = useState([]);
   const { tissueId } = useParams();
   const [sendTissueConfLoad, setTissueConfLoad] = useState(false);
+  const [getLoading, setGetLoading] = useState(true);
   const [tissue, setTissue] = useState();
   const [tissueConfData, setTissueConfData] = useState({
     name: "",
@@ -35,6 +37,9 @@ const TissueConf = () => {
     axios
       .get("/tissue-conf")
       .then((res) => setTissueConfs(res.data))
+      .finally(() => {
+        setGetLoading(false)
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -88,65 +93,69 @@ const TissueConf = () => {
         <div>
           <h1 style={{ textAlign: "center", color: "white" }}>Configuration</h1>
 
-          <div className="products-area-wrapper tableView">
-            <div className="products-header">
-              <div className="product-cell image">Config ID</div>
-              <div className="product-cell category">Config Name</div>
-              <div className="product-cell status-cell">Config Color</div>
-              <div className="product-cell sales">Config Hex Color</div>
-            </div>
-            {tissueConfs &&
-              tissueConfs.map((item, index) => {
-                return (
-                  <div key={index + 1} className="products-row">
-                    <button className="cell-more-button">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="feather feather-more-vertical"
-                      >
-                        <circle cx="12" cy="12" r="1" />
-                        <circle cx="12" cy="5" r="1" />
-                        <circle cx="12" cy="19" r="1" />
-                      </svg>
-                    </button>
-                    <div className="product-cell image">
-                      <span>{index + 1}</span>
-                    </div>
-                    <div className="product-cell category">
-                      <span className="cell-label">Config Name:</span>
-                      {item.name}
-                    </div>
+          {getLoading ? (
+            <Spinner />
+          ) : (
+            <div className="products-area-wrapper tableView">
+              <div className="products-header">
+                <div className="product-cell image">Config ID</div>
+                <div className="product-cell category">Config Name</div>
+                <div className="product-cell status-cell">Config Color</div>
+                <div className="product-cell sales">Config Hex Color</div>
+              </div>
+              {tissueConfs &&
+                tissueConfs.map((item, index) => {
+                  return (
+                    <div key={index + 1} className="products-row">
+                      <button className="cell-more-button">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="feather feather-more-vertical"
+                        >
+                          <circle cx="12" cy="12" r="1" />
+                          <circle cx="12" cy="5" r="1" />
+                          <circle cx="12" cy="19" r="1" />
+                        </svg>
+                      </button>
+                      <div className="product-cell image">
+                        <span>{index + 1}</span>
+                      </div>
+                      <div className="product-cell category">
+                        <span className="cell-label">Config Name:</span>
+                        {item.name}
+                      </div>
 
-                    <div className="product-cell sales">
-                      <span className="cell-label">Config Color:</span>
-                      {item.color}
+                      <div className="product-cell sales">
+                        <span className="cell-label">Config Color:</span>
+                        {item.color}
+                      </div>
+                      <div className="product-cell stock">
+                        <span className="cell-label">Config Hex Color:</span>
+                        <div
+                          style={{
+                            backgroundColor: `${item.hex_color}`,
+                            width: `45px`,
+                            height: `25px`,
+                            borderRadius: `5px`,
+                            border: `1px solid black`,
+                            boxShadow: `1px 1px 5px white`,
+                          }}
+                        ></div>
+                        {/* {item.hex_color} */}
+                      </div>
                     </div>
-                    <div className="product-cell stock">
-                      <span className="cell-label">Config Hex Color:</span>
-                      <div
-                        style={{
-                          backgroundColor: `${item.hex_color}`,
-                          width: `45px`,
-                          height: `25px`,
-                          borderRadius: `5px`,
-                          border: `1px solid black`,
-                          boxShadow: `1px 1px 5px white`,
-                        }}
-                      ></div>
-                      {/* {item.hex_color} */}
-                    </div>
-                  </div>
-                );
-              })}
-          </div>
+                  );
+                })}
+            </div>
+          )}
         </div>
       </div>
 

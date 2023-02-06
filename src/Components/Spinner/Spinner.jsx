@@ -1,21 +1,31 @@
-// import {CSSProperties} from 'react'
-// import { ClipLoader } from 'react-spinners';
+import { useContext } from "react";
+import { ThemeContext } from "../../Context/ThemeContext/ThemeContext";
+import "./Spinner.css";
 
-// const override: CSSProperties = {
-//   display: "block",
-//   margin: "0 auto",
-//   borderColor: "white",
-// };
+export default function Spinner() {
+  const { theme } = useContext(ThemeContext);
 
-// export default function Spinner({ loading }) {
-//   console.log(loading);
-//   return (
-//     <ClipLoader
-//         loading={loading}
-//         cssOverride={override}
-//         size={150}
-//         aria-label="Loading Spinner"
-//         data-testid="loader"
-//       />
-//   )
-// }
+  return (
+    <div className="wrapper loader">
+      <h2 style={{ color: theme ? "white" : "black" }}>Loading</h2>
+      <div className="dots">
+        <div
+          style={{ color: theme ? "white" : "black" }}
+          className="dot dot-1"
+        ></div>
+        <div
+          style={{ color: theme ? "white" : "black" }}
+          className="dot dot-2"
+        ></div>
+        <div
+          style={{ color: theme ? "white" : "black" }}
+          className="dot dot-3"
+        ></div>
+        <div
+          style={{ color: theme ? "white" : "black" }}
+          className="dot dot-4"
+        ></div>
+      </div>
+    </div>
+  );
+}

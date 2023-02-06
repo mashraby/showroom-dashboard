@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import Actions from "../../Components/Actions/Actions";
 import Header from "../../Components/Header/Header";
 import Navbar from "../../Components/Navbar/Navbar";
+import Spinner from "../../Components/Spinner/Spinner";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 
 export default function Furnute_types() {
@@ -12,6 +13,7 @@ export default function Furnute_types() {
   const [types, setTypes] = useState([]);
   const [typeName, setTypeName] = useState("");
   const [sendTypeLoad, setSendTypeLoad] = useState(false);
+  const [getLoading, setGetLoading] = useState(true);
 
   const sendType = (e) => {
     e.preventDefault();
@@ -42,6 +44,9 @@ export default function Furnute_types() {
     axios
       .get("/types")
       .then((res) => setTypes(res.data))
+      .finally(() => {
+        setGetLoading(false);
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -57,48 +62,52 @@ export default function Furnute_types() {
       <div className="app-content">
         <Header headerInfos={data} />
         <Actions />
-        <div className="products-area-wrapper tableView">
-          <div className="products-header">
-            <div className="product-cell image">Type ID</div>
-            <div className="product-cell category">Type Name</div>
+        {getLoading ? (
+          <Spinner />
+        ) : (
+          <div className="products-area-wrapper tableView">
+            <div className="products-header">
+              <div className="product-cell image">Type ID</div>
+              <div className="product-cell category">Type Name</div>
+            </div>
+            {types &&
+              types.map((item, index) => {
+                return (
+                  <div key={index + 1} className="products-row">
+                    <button className="cell-more-button">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="feather feather-more-vertical"
+                      >
+                        <circle cx="12" cy="12" r="1" />
+                        <circle cx="12" cy="5" r="1" />
+                        <circle cx="12" cy="19" r="1" />
+                      </svg>
+                    </button>
+                    <div className="product-cell image">
+                      <img
+                        src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+                        alt="product"
+                      />
+                      <span>{index + 1}</span>
+                    </div>
+                    <div className="product-cell category">
+                      <span className="cell-label">Type Name:</span>
+                      {item.name}
+                    </div>
+                  </div>
+                );
+              })}
           </div>
-          {types &&
-            types.map((item, index) => {
-              return (
-                <div key={index + 1} className="products-row">
-                  <button className="cell-more-button">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-more-vertical"
-                    >
-                      <circle cx="12" cy="12" r="1" />
-                      <circle cx="12" cy="5" r="1" />
-                      <circle cx="12" cy="19" r="1" />
-                    </svg>
-                  </button>
-                  <div className="product-cell image">
-                    <img
-                      src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
-                      alt="product"
-                    />
-                    <span>{index + 1}</span>
-                  </div>
-                  <div className="product-cell category">
-                    <span className="cell-label">Type Name:</span>
-                    {item.name}
-                  </div>
-                </div>
-              );
-            })}
-        </div>
+        )}
       </div>
 
       <div

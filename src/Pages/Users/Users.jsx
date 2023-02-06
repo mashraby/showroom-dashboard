@@ -8,6 +8,7 @@ import { GetFetchContext } from "../../Context/GetFetchContext/GetFetchContext";
 import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Spinner from "../../Components/Spinner/Spinner";
 
 export default function Users() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
@@ -15,6 +16,7 @@ export default function Users() {
   const { roles } = useContext(GetFetchContext);
   const [companys, setCompanys] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [getLoading, setGetLoading] = useState(true);
   const [userData, setUserData] = useState({
     username: "",
     password: "",
@@ -65,6 +67,9 @@ export default function Users() {
     axios
       .get("/users")
       .then((res) => setUsers(res.data))
+      .finally(() => {
+        setGetLoading(false);
+      })
       .catch((err) => console.error(err));
   }, []);
 
@@ -86,64 +91,68 @@ export default function Users() {
       <div className="app-content">
         <Header headerInfos={data} />
         <Actions />
-        <div className="products-area-wrapper tableView">
-          <div className="products-header">
-            <div className="product-cell image">User ID</div>
-            <div className="product-cell category">User Name</div>
-            <div className="product-cell status-cell">Status</div>
-            <div className="product-cell sales">User Role</div>
+        {getLoading ? (
+          <Spinner />
+        ) : (
+          <div className="products-area-wrapper tableView">
+            <div className="products-header">
+              <div className="product-cell image">User ID</div>
+              <div className="product-cell category">User Name</div>
+              <div className="product-cell status-cell">Status</div>
+              <div className="product-cell sales">User Role</div>
+            </div>
+            {users &&
+              users.map((item, index) => {
+                return (
+                  <div key={index + 1} className="products-row">
+                    <button className="cell-more-button">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="feather feather-more-vertical"
+                      >
+                        <circle cx="12" cy="12" r="1" />
+                        <circle cx="12" cy="5" r="1" />
+                        <circle cx="12" cy="19" r="1" />
+                      </svg>
+                    </button>
+                    <div className="product-cell image">
+                      <img
+                        src={item.role?.role_name === "SELLER" ? seller : admin}
+                        alt="product"
+                      />
+                      <span>{index + 1}</span>
+                    </div>
+                    <div className="product-cell category">
+                      <span className="cell-label">User Name:</span>
+                      {item.username}
+                    </div>
+                    <div className="product-cell status-cell">
+                      <span className="cell-label">Status:</span>
+                      <span
+                        className={`status ${
+                          item.is_active ? "active" : "disabled"
+                        }`}
+                      >
+                        {item.is_active ? "Active" : "Disabled"}
+                      </span>
+                    </div>
+                    <div className="product-cell sales">
+                      <span className="cell-label">User Role:</span>
+                      {item.role?.role_name}
+                    </div>
+                  </div>
+                );
+              })}
           </div>
-          {users &&
-            users.map((item, index) => {
-              return (
-                <div key={index + 1} className="products-row">
-                  <button className="cell-more-button">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="feather feather-more-vertical"
-                    >
-                      <circle cx="12" cy="12" r="1" />
-                      <circle cx="12" cy="5" r="1" />
-                      <circle cx="12" cy="19" r="1" />
-                    </svg>
-                  </button>
-                  <div className="product-cell image">
-                    <img
-                      src={item.role?.role_name === "SELLER" ? seller : admin}
-                      alt="product"
-                    />
-                    <span>{index + 1}</span>
-                  </div>
-                  <div className="product-cell category">
-                    <span className="cell-label">User Name:</span>
-                    {item.username}
-                  </div>
-                  <div className="product-cell status-cell">
-                    <span className="cell-label">Status:</span>
-                    <span
-                      className={`status ${
-                        item.is_active ? "active" : "disabled"
-                      }`}
-                    >
-                      {item.is_active ? "Active" : "Disabled"}
-                    </span>
-                  </div>
-                  <div className="product-cell sales">
-                    <span className="cell-label">User Role:</span>
-                    {item.role?.role_name}
-                  </div>
-                </div>
-              );
-            })}
-        </div>
+        )}
       </div>
       <div
         onClick={() => setIsOpen(!isOpen)}

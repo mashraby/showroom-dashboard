@@ -7,10 +7,12 @@ import { OpenModal } from "../../Context/OpenModal/OpenModalContext";
 import accounting from "accounting";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Spinner from "../../Components/Spinner/Spinner";
 
 export default function Tissues() {
   const { isOpen, setIsOpen } = useContext(OpenModal);
   const [sendTissueLoad, setSendTissueLoad] = useState(false);
+  const [getLoading, setGetLoading] = useState(true);
   const [tissueName, setTissueName] = useState("");
   const [tissueCost, setTissueCost] = useState("");
   const [tissuePrice1, setTissuePrice1] = useState("");
@@ -56,6 +58,9 @@ export default function Tissues() {
     axios
       .get("/tissue")
       .then((res) => setTissues(res.data))
+      .finally(() => {
+        setGetLoading(false);
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -65,66 +70,70 @@ export default function Tissues() {
       <div className="app-content">
         <Header headerInfos={data} />
         <Actions />
-        <div className="products-area-wrapper tableView">
-          <div className="products-header">
-            <div className="product-cell image">Tissue ID</div>
-            <div className="product-cell category">Tissue Name</div>
-            <div className="product-cell status-cell">Tissue Cost</div>
-            <div className="product-cell sales">Tissue Price 1</div>
-            <div className="product-cell stock">Tissue Price 2</div>
-          </div>
-          {tissues &&
-            tissues.map((item, index) => {
-              return (
-                <Link key={index + 1} to={`/tissue/${item.id}`}>
-                  <div className="products-row">
-                    <button className="cell-more-button">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="feather feather-more-vertical"
-                      >
-                        <circle cx="12" cy="12" r="1" />
-                        <circle cx="12" cy="5" r="1" />
-                        <circle cx="12" cy="19" r="1" />
-                      </svg>
-                    </button>
-                    <div className="product-cell image">
-                      <img
-                        src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
-                        alt="product"
-                      />
-                      <span>{index + 1}</span>
-                    </div>
-                    <div className="product-cell category">
-                      <span className="cell-label">Tissue Name:</span>
-                      {item.name}
-                    </div>
+        {getLoading ? (
+          <Spinner />
+        ) : (
+          <div className="products-area-wrapper tableView">
+            <div className="products-header">
+              <div className="product-cell image">Tissue ID</div>
+              <div className="product-cell category">Tissue Name</div>
+              <div className="product-cell status-cell">Tissue Cost</div>
+              <div className="product-cell sales">Tissue Price 1</div>
+              <div className="product-cell stock">Tissue Price 2</div>
+            </div>
+            {tissues &&
+              tissues.map((item, index) => {
+                return (
+                  <Link key={index + 1} to={`/tissue/${item.id}`}>
+                    <div className="products-row">
+                      <button className="cell-more-button">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="feather feather-more-vertical"
+                        >
+                          <circle cx="12" cy="12" r="1" />
+                          <circle cx="12" cy="5" r="1" />
+                          <circle cx="12" cy="19" r="1" />
+                        </svg>
+                      </button>
+                      <div className="product-cell image">
+                        <img
+                          src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+                          alt="product"
+                        />
+                        <span>{index + 1}</span>
+                      </div>
+                      <div className="product-cell category">
+                        <span className="cell-label">Tissue Name:</span>
+                        {item.name}
+                      </div>
 
-                    <div className="product-cell sales">
-                      <span className="cell-label">Tissue Cost:</span>
-                      {accounting.formatNumber(item.cost, 0, " ")}
+                      <div className="product-cell sales">
+                        <span className="cell-label">Tissue Cost:</span>
+                        {accounting.formatNumber(item.cost, 0, " ")}
+                      </div>
+                      <div className="product-cell stock">
+                        <span className="cell-label">Tissue Price 1:</span>
+                        {accounting.formatNumber(item.price1, 0, " ")}
+                      </div>
+                      <div className="product-cell price">
+                        <span className="cell-label">Tissue Price 2:</span>
+                        {accounting.formatNumber(item.price2, 0, " ")}
+                      </div>
                     </div>
-                    <div className="product-cell stock">
-                      <span className="cell-label">Tissue Price 1:</span>
-                      {accounting.formatNumber(item.price1, 0, " ")}
-                    </div>
-                    <div className="product-cell price">
-                      <span className="cell-label">Tissue Price 2:</span>
-                      {accounting.formatNumber(item.price2, 0, " ")}
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-        </div>
+                  </Link>
+                );
+              })}
+          </div>
+        )}
       </div>
 
       <div
