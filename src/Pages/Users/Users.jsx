@@ -31,6 +31,8 @@ export default function Users() {
     },
   };
 
+  const allInputs = document.querySelectorAll("input");
+
   const sendUserData = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -51,10 +53,9 @@ export default function Users() {
         setLoading(false);
         setIsOpen(false);
         axios.get("/users").then((res) => setUsers(res.data));
-        e.target.username.value = null;
-        e.target.password.value = null;
-        e.target.role.value = null;
-        e.target.company.value = null;
+        allInputs.forEach((input) => {
+          return (input.value = null);
+        });
       })
       .catch((err) => {
         if (err) {

@@ -26,6 +26,8 @@ export default function Tissues() {
     },
   };
 
+  const allInputs = document.querySelectorAll("input");
+
   const sendTissue = (e) => {
     e.preventDefault();
     setSendTissueLoad(true);
@@ -51,6 +53,9 @@ export default function Tissues() {
         setSendTissueLoad(false);
         setIsOpen(false);
         axios.get("/tissue").then((res) => setTissues(res.data));
+        allInputs.forEach((input) => {
+          return (input.value = null);
+        });
       });
   };
 
@@ -162,10 +167,13 @@ export default function Tissues() {
             <span className="input-label">Enter a tissue cost</span>
             <input
               required={true}
-              defaultValue={accounting.formatNumber(tissueCost, 0, " ")}
-              type="number"
+              type="text"
               onChange={(e) => {
-                accounting.formatNumber(e.target.value, 0, " ");
+                e.target.value = accounting.formatNumber(
+                  e.target.value,
+                  0,
+                  " "
+                );
                 setTissueCost(accounting.unformat(e.target.value));
               }}
               placeholder="tissue cost"
@@ -175,7 +183,6 @@ export default function Tissues() {
             <span className="input-label">Enter a tissue price 1</span>
             <input
               required={true}
-              defaultValue={accounting.formatNumber(tissuePrice1, 0, " ")}
               type="number"
               onChange={(e) => {
                 accounting.formatNumber(e.target.value, 0, " ");
@@ -188,7 +195,6 @@ export default function Tissues() {
             <span className="input-label">Enter a tissue price 2</span>
             <input
               required={true}
-              defaultValue={accounting.formatNumber(tissuePrice2, 0, " ")}
               type="number"
               onChange={(e) => {
                 setTissuePrice2(accounting.unformat(e.target.value));

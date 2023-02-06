@@ -22,6 +22,10 @@ export default function Companys() {
     },
   };
 
+  const allInputs = document.querySelectorAll("input");
+
+  console.log(allInputs);
+
   const sendCompany = (e) => {
     e.preventDefault();
     setSendCompLoad(true);
@@ -43,7 +47,17 @@ export default function Companys() {
       .finally(() => {
         setSendCompLoad(false);
         setIsOpen(false);
-        axios.get("company").then((res) => setCompanys(res.data));
+        axios
+          .get("/company", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((res) => setCompanys(res.data));
+        allInputs.forEach((input) => {
+          return (input.value = null);
+        });
       });
   };
 

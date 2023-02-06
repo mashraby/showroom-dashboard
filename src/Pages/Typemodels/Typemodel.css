@@ -75,3 +75,19 @@
 .input-boxes input:focus {
   border: 2px solid cornflowerblue;
 }
+
+.edit_type_conf_btn {
+  width: 130px;
+  padding: 6px;
+  background-color: #59719d;
+  border: 2px solid #59719d;
+  color: #fff;
+  border-radius: 4px;
+  transition: all 0.3s ease-in-out;
+}
+
+.edit_type_conf_btn:hover {
+  background-color: transparent;
+  color: #59719d;
+  border: 2px solid #59719d;
+}

@@ -31,6 +31,8 @@ export default function Legs() {
       .catch((err) => console.error(err));
   }, []);
 
+  const allInputs = document.querySelectorAll("input")
+
   const sendLeg = (e) => {
     e.preventDefault();
     setSendLegLoad(true);
@@ -48,6 +50,9 @@ export default function Legs() {
         setIsOpen(false);
         setSendLegLoad(false);
         axios.get("/legs").then((res) => setlegs(res.data));
+        allInputs.forEach(input => {
+          return input.value = null
+        })
       })
       .catch((err) => {
         if (err) {

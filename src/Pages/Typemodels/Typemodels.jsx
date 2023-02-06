@@ -476,6 +476,7 @@ export default function Typemodels() {
                       <div className="product-cell category">
                         <span className="cell-label">Edit Config:</span>
                         <button
+                          className="edit_type_conf_btn"
                           id={item.id}
                           onClick={(e) => OpenEditModal(e.target.id)}
                         >
@@ -516,10 +517,12 @@ export default function Typemodels() {
           <div className="input-box">
             <span className="input-label">Edit Cost</span>
             <input
-              onChange={(e) =>
-                setUpdateData({ ...updateData, cost: e.target.value })
+              onChange={(e) =>{
+                e.target.value = accounting.formatNumber(e.target.value, 0, " ")
+                setUpdateData({ ...updateData, cost: accounting.unformat(e.target.value) })
               }
-              defaultValue={modalData?.cost}
+              }
+              defaultValue={accounting.formatNumber(modalData?.cost, 0, " ")}
               required={true}
               type="text"
               placeholder="Edit cost"
